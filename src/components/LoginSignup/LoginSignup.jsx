@@ -1,12 +1,29 @@
 import React, { useState } from "react";
 import './LoginSignup.css'
+import { useNavigate } from "react-router-dom";
+
 
 import email_icon from '../../assets/email.png'
 import password_icon from '../../assets/password.png'
 
 const LoginSignup = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    const [action, setAction] = useState("Login");
+    const adminUser = {
+        email: "admin@example.com",
+        password: "admin123"
+    };
+
+    const handleLogin = () => {
+        if (email === adminUser.email && password === adminUser.password) {
+            navigate("/panel");
+        } else {
+            setError("Correo o contraseña incorrectos");
+        }
+    };
 
     return (
         <div className="container">
@@ -17,19 +34,31 @@ const LoginSignup = () => {
             <div className="inputs">
                 <div className="input">
                     <img src={email_icon} alt="" />
-                    <input type="email" placeholder="Email" />
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </div>
                 <div className="input">
                     <img src={password_icon} alt="" />
-                    <input type="password" placeholder="Contraseña" />
+                    <input
+                        type="password"
+                        placeholder="Contraseña"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
             </div>
-
+            {error && <div className="error">{error}</div>}
             <div className="submit-container">
-                <div className={action === "Login" ? "submit large" : "submit"} onClick={() => setAction("Login")}>Ingresar</div>
+                <div className="submit" onClick={handleLogin}>
+                    Ingresar
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default LoginSignup
+export default LoginSignup;
