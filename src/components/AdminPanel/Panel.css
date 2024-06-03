@@ -1,17 +1,112 @@
 .admin-panel {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
 }
 
-.admin-info {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.admin-name {
-    font-weight: bold;
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.user-details {
+    text-align: center;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.menu li {
+    margin: 10px 0;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+    background-color: #e4e4e4;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.menu a:hover {
+    background-color: #ccc;
+}
+
+.logout-button {
+    margin-top: auto;
+    padding: 10px 20px;
+    background-color: #e4e4e4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #ccc;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    background-color: #fff;
+}
+
+.product-management {
+    display: flex;
+    gap: 20px;
+}
+
+.product-button,
+.category-button,
+.supplier-button {
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.product-button {
+    background-color: #f28b82;
+    color: white;
+}
+
+.category-button {
+    background-color: #a8d5a2;
+    color: white;
+}
+
+.supplier-button {
+    background-color: #ffd166;
+    color: white;
+}
+
+.view-content {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
