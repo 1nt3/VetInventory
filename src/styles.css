@@ -4,8 +4,7 @@
   line-height: 24px;
   font-weight: 400;
 
-
-  background-image: url('../../assets/images.jpg');
+  /*background-image: url("../../assets/images.jpg");*/
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,12 +13,9 @@
 }
 
 .container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 .logo {
@@ -52,7 +48,8 @@ h1 {
   text-align: center;
 }
 
-input,
+/*input,
+*/
 button {
   border-radius: 8px;
   border: 1px solid transparent;
