@@ -118,3 +118,290 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Estilos para la vista de Existencias */
+/* Styles for the Existencias view */
+.existencias h2 {
+  margin-bottom: 20px;
+}
+
+.existencias .header {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  /* Center buttons horizontally */
+  margin-bottom: 20px;
+}
+
+.add-button,
+.edit-button,
+.delete-button,
+.report-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.report-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.existencias-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.existencias-table th,
+.existencias-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.existencias-table th {
+  background-color: #f4f4f4;
+}
+
+.usuarios h2 {
+  margin-bottom: 20px;
+}
+
+.usuarios .header {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.add-button,
+.edit-button,
+.delete-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.usuarios-table th,
+.usuarios-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.usuarios-table th {
+  background-color: #f4f4f4;
+}
+
+.productos {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.productos .header {
+  display: flex;
+  gap: 20px;
+  /* Aumenta el espacio entre los botones */
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.productos .add-button,
+.productos .edit-button,
+.productos .delete-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.productos .add-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.productos .edit-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.productos .delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.productos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.productos-table th,
+.productos-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.productos-table th {
+  background-color: #f4f4f4;
+}
+
+.categorias {
+  background-color: #fdfdfd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.categorias .header {
+  display: flex;
+  gap: 20px;
+  /* Aumenta el espacio entre los botones */
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.categorias .add-button,
+.categorias .edit-button,
+.categorias .delete-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.categorias .add-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.categorias .edit-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.categorias .delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.categorias-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.categorias-table th,
+.categorias-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.categorias-table th {
+  background-color: #f4f4f4;
+}
+
+.proveedores {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.proveedores .header {
+  display: flex;
+  gap: 20px;
+  /* Aumenta el espacio entre los botones */
+  flex-direction: row;
+  margin-bottom: px;
+}
+
+.proveedores .add-button,
+.proveedores .edit-button,
+.proveedores .delete-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.proveedores .add-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.proveedores .edit-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.proveedores .delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.proveedores-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.proveedores-table th,
+.proveedores-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.proveedores-table th {
+  background-color: #f4f4f4;
+}
