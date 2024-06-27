@@ -1,19 +1,20 @@
-import "./App.css";
+import { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import LoginSignup from "./components/LoginSignup/LoginSignup";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 import Panel from "./components/Panel/Panel";
-import ProductEntry from "./components/RegisterProduct/ProductEntry";
+import Loading from "./components/LoginSignup/Loading";
+import LogoutLoading from "./components/LoginSignup/LogoutLoading"; // Importar el nuevo componente
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <Router>
       <Routes>
-        {/* 
-          <Route path="/" element={<ProductEntry />} />
-        */}
-        <Route path="/" element={<LoginSignup />} />
-        <Route path="/panel" element={<Panel />} />
+        <Route path="/" element={<LoginSignup setAuthenticated={setIsAuthenticated} />} />
+        <Route path="/loading" element={<Loading />} />
+        <Route path="/logout-loading" element={<LogoutLoading />} /> {/* Nueva ruta */}
+        <Route path="/panel" element={isAuthenticated ? <Panel setAuthenticated={setIsAuthenticated} /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );

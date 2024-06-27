@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { useNavigate } from "react-router-dom";
 import "./LoginSignup.css";
-
 import emailIcon from "../../assets/email.png";
 import passwordIcon from "../../assets/password.png";
 
-const LoginSignup = () => {
+const LoginSignup = ({ setAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +16,8 @@ const LoginSignup = () => {
     try {
       setLoading(true);
       await authenticateUser(email, password);
-      navigate("/panel");
+      setAuthenticated(true); 
+      navigate("/loading"); 
     } catch (error) {
       setError(error.message);
     } finally {
@@ -71,8 +71,8 @@ const LoginSignup = () => {
           </div>
         )}
         <div className="submit-container">
-          <button className="submit" onClick={handleLogin}>
-            Ingresar
+          <button className="submit" onClick={handleLogin} disabled={loading}>
+            {loading ? "Cargando..." : "Ingresar"}
           </button>
         </div>
       </div>

@@ -1,13 +1,157 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Panel.css";
 
 // Componentes para las diferentes vistas
-const Productos = () => <div>Vista de Productos</div>;
-const Categorias = () => <div>Vista de Categorías</div>;
-const Proveedores = () => <div>Vista de Proveedores</div>;
+const Productos = () => (
+  <div className="productos">
+    <h2>Gestión de Productos</h2>
+    <button className="add-button">Agregar</button>
+    <button className="edit-button">Editar</button>
+    <button className="delete-button">Eliminar</button>
+    <table className="productos-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Proveedor</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
 
-const Panel = () => {
+const Categorias = () => (
+  <div className="categorias">
+    <h2>Gestión de Categorías</h2>
+    <button className="add-button">Agregar</button>
+    <button className="edit-button">Editar</button>
+    <button className="delete-button">Eliminar</button>
+    <table className="categorias-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+const Proveedores = () => (
+  <div className="proveedores">
+    <h2>Gestión de Proveedores</h2>
+    <button className="add-button">Agregar</button>
+    <button className="edit-button">Editar</button>
+    <button className="delete-button">Eliminar</button>
+    <table className="proveedores-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Telefono</th>
+          <th>Dirección</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+const Existencias = () => (
+  <div className="existencias">
+    <h2>Existencias</h2>
+    <div className="header">
+      <button className="add-button">Agregar</button>
+      <button className="edit-button">Editar</button>
+      <button className="delete-button">Eliminar</button>
+      <button className="report-button">Reporte</button>
+    </div>
+    <table className="existencias-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Categoría</th>
+          <th>Proveedor</th>
+          <th>Stock inicial</th>
+          <th>Stock actual</th>
+          <th>Precio compra</th>
+          <th>Precio venta</th>
+          <th>Entrada por</th>
+          <th>Fecha entrada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+const Usuarios = () => (
+  <div className="usuarios">
+    <h2>Usuarios</h2>
+    <div className="header">
+      <button className="add-button">Agregar</button>
+      <button className="edit-button">Editar</button>
+      <button className="delete-button">Eliminar</button>
+    </div>
+    <table className="usuarios-table">
+      <thead>
+        <tr>
+          <th>Nombre completo</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Contraseña</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
+
+const Panel = ({ setAuthenticated }) => {
   const [currentViewId, setCurrentViewId] = useState("productos");
+  const navigate = useNavigate();
 
   const renderCurrentView = () => {
     switch (currentViewId) {
@@ -24,6 +168,11 @@ const Panel = () => {
       default:
         return <Productos />;
     }
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    navigate("/logout-loading");
   };
 
   const getCurrentViewTitle = () => {
@@ -79,7 +228,9 @@ const Panel = () => {
               </li>
             </ul>
           </nav>
-          <button className="logout-button">Cerrar sesión</button>
+          <button className="logout-button" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
         </aside>
         <main className="main-content">
           <h1>{getCurrentViewTitle()}</h1>
