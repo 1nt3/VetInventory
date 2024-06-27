@@ -10,10 +10,9 @@ function App() {
     <Router>
       <Routes>
         {/* 
-          Comentado para probar la función (command) create_product que se encuentra en el componente ProductEntry (que es temporal).
-          <Route path="/" element={<LoginSignup />} />
+          <Route path="/" element={<ProductEntry />} />
         */}
-        <Route path="/" element={<ProductEntry />} />
+        <Route path="/" element={<LoginSignup />} />
         <Route path="/panel" element={<Panel />} />
       </Routes>
     </Router>
