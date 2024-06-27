@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Panel.css";
 
-// Componentes para las diferentes vistas
 const Productos = () => <div>Vista de Productos</div>;
 const Categorias = () => <div>Vista de Categorías</div>;
 const Proveedores = () => <div>Vista de Proveedores</div>;
 
-const Panel = () => {
+const Panel = ({ setAuthenticated }) => {
   const [currentViewId, setCurrentViewId] = useState("productos");
+  const navigate = useNavigate();
 
   const renderCurrentView = () => {
     switch (currentViewId) {
@@ -20,6 +21,11 @@ const Panel = () => {
       default:
         return <Productos />;
     }
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    navigate("/logout-loading");
   };
 
   return (
@@ -46,7 +52,9 @@ const Panel = () => {
               </li>
             </ul>
           </nav>
-          <button className="logout-button">Cerrar sesión</button>
+          <button className="logout-button" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
         </aside>
         <main className="main-content">
           <h1>Gestión de productos</h1>
