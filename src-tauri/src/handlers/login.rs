@@ -13,7 +13,7 @@ pub async fn is_credential_valid(
     };
 
     let query = sqlx::query!(
-        "SELECT email FROM user WHERE email = ? AND password = ?",
+        "SELECT email FROM user WHERE email = ? AND password = ?;",
         email,
         password
     );
@@ -27,16 +27,3 @@ pub async fn is_credential_valid(
         Err(e) => Err(format!("Failed to execute query: {}", e)),
     }
 }
-//SELECT EXISTS(SELECT 1 FROM users WHERE email = ? AND password = ?);
-
-// SELECT EXISTS(SELECT 1 FROM users WHERE email = ? AND password = ?);
-/*
-
-SELECT COUNT(*)
-FROM users
-WHERE email = ? AND password = ?;
-*/
-
-/*
-
-*/
