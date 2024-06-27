@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Panel.css";
 
+
 // Componentes para las diferentes vistas
-const Productos = React.memo(() => (
+const Productos = () => (
   <div className="productos">
     <h2>Gestión de Productos</h2>
     <button className="add-button">Agregar</button>
@@ -27,9 +29,9 @@ const Productos = React.memo(() => (
       </tbody>
     </table>
   </div>
-));
+);
 
-const Categorias = React.memo(() => (
+const Categorias = () => (
   <div className="categorias">
     <h2>Gestión de Categorías</h2>
     <button className="add-button">Agregar</button>
@@ -50,9 +52,9 @@ const Categorias = React.memo(() => (
       </tbody>
     </table>
   </div>
-));
+);
 
-const Proveedores = React.memo(() => (
+const Proveedores = () => (
   <div className="proveedores">
     <h2>Gestión de Proveedores</h2>
     <button className="add-button">Agregar</button>
@@ -77,9 +79,9 @@ const Proveedores = React.memo(() => (
       </tbody>
     </table>
   </div>
-));
+);
 
-const Existencias = React.memo(() => (
+const Existencias = () => (
   <div className="existencias">
     <h2>Existencias</h2>
     <div className="header">
@@ -117,9 +119,9 @@ const Existencias = React.memo(() => (
       </tbody>
     </table>
   </div>
-));
+);
 
-const Usuarios = React.memo(() => (
+const Usuarios = () => (
   <div className="usuarios">
     <h2>Usuarios</h2>
     <div className="header">
@@ -146,10 +148,12 @@ const Usuarios = React.memo(() => (
       </tbody>
     </table>
   </div>
-));
+);
 
-const Panel = () => {
+
+const Panel = ({ setAuthenticated }) => {
   const [currentViewId, setCurrentViewId] = useState("productos");
+  const navigate = useNavigate();
 
   const renderCurrentView = () => {
     switch (currentViewId) {
@@ -169,6 +173,11 @@ const Panel = () => {
   };
 
 
+  const handleLogout = () => {
+    setAuthenticated(false);
+    navigate("/logout-loading");
+
+
 
   const getCurrentViewTitle = () => {
     switch (currentViewId) {
@@ -185,6 +194,7 @@ const Panel = () => {
       default:
         return "Gestión de Productos";
     }
+
   };
 
   return (
@@ -217,7 +227,9 @@ const Panel = () => {
               </li>
             </ul>
           </nav>
-          <button className="logout-button">Cerrar sesión</button>
+          <button className="logout-button" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
         </aside>
         <main className="main-content">
           <h1>{getCurrentViewTitle()}</h1>
