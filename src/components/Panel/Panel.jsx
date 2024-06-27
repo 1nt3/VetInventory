@@ -17,8 +17,31 @@ const Panel = () => {
         return <Categorias />;
       case "proveedores":
         return <Proveedores />;
+      case "existencias":
+        return <Existencias />;
+      case "usuarios":
+        return <Usuarios />;
       default:
         return <Productos />;
+    }
+  };
+
+
+
+  const getCurrentViewTitle = () => {
+    switch (currentViewId) {
+      case "productos":
+        return "Gestión de Productos";
+      case "categorias":
+        return "Gestión de Categorías";
+      case "proveedores":
+        return "Gestión de Proveedores";
+      case "existencias":
+        return "Existencias";
+      case "usuarios":
+        return "Gestión de Usuarios";
+      default:
+        return "Gestión de Productos";
     }
   };
 
@@ -36,40 +59,48 @@ const Panel = () => {
           <nav className="menu">
             <ul>
               <li>
-                <a href="#product-management">Gestión de productos</a>
+                <a href="#product-management" onClick={() => setCurrentViewId("productos")}>
+                  Gestión de productos
+                </a>
               </li>
               <li>
-                <a href="#inventory">Existencias</a>
+                <a href="#inventory" onClick={() => setCurrentViewId("existencias")}>
+                  Existencias
+                </a>
               </li>
               <li>
-                <a href="#users">Usuarios</a>
+                <a href="#users" onClick={() => setCurrentViewId("usuarios")}>
+                  Usuarios
+                </a>
               </li>
             </ul>
           </nav>
           <button className="logout-button">Cerrar sesión</button>
         </aside>
         <main className="main-content">
-          <h1>Gestión de productos</h1>
-          <div className="product-management">
-            <button
-              className="product-button"
-              onClick={() => setCurrentViewId("productos")}
-            >
-              Productos
-            </button>
-            <button
-              className="category-button"
-              onClick={() => setCurrentViewId("categorias")}
-            >
-              Categorías
-            </button>
-            <button
-              className="supplier-button"
-              onClick={() => setCurrentViewId("proveedores")}
-            >
-              Proveedores
-            </button>
-          </div>
+          <h1>{getCurrentViewTitle()}</h1>
+          {currentViewId !== "existencias" && currentViewId !== "usuarios" && (
+            <div className="product-management">
+              <button
+                className="product-button"
+                onClick={() => setCurrentViewId("productos")}
+              >
+                Productos
+              </button>
+              <button
+                className="category-button"
+                onClick={() => setCurrentViewId("categorias")}
+              >
+                Categorías
+              </button>
+              <button
+                className="supplier-button"
+                onClick={() => setCurrentViewId("proveedores")}
+              >
+                Proveedores
+              </button>
+            </div>
+          )}
           <div className="view-content">{renderCurrentView()}</div>
         </main>
       </div>
