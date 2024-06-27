@@ -1,5 +1,4 @@
 -- Add migration script here
--- Add migration script here
 -- Crear tabla user
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,13 +42,13 @@ CREATE TABLE product (
   name TEXT NOT NULL,
   description TEXT,
   category_id INTEGER NOT NULL,
-  provider_id INTEGER NOT NULL,
+  supplier_id INTEGER NOT NULL,
   price_purchase DECIMAL NOT NULL,
   price_sell DECIMAL NOT NULL,
   stock_initial INTEGER NOT NULL,
   stock_current INTEGER NOT NULL,
   FOREIGN KEY (category_id) REFERENCES category(id),
-  FOREIGN KEY (provider_id) REFERENCES provider(id)
+  FOREIGN KEY (supplier_id) REFERENCES supplier(id)
 );
 
 -- Crear tabla category
@@ -58,8 +57,8 @@ CREATE TABLE category (
   name TEXT NOT NULL
 );
 
--- Crear tabla provider
-CREATE TABLE provider (
+-- Crear tabla supplier
+CREATE TABLE supplier (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   address TEXT NOT NULL,

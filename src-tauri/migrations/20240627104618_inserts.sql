@@ -17,12 +17,12 @@ INSERT INTO category (name) VALUES ('Accesorios');
 INSERT INTO category (name) VALUES ('Alimentos');
 
 -- Insertar proveedores
-INSERT INTO provider (name, address, phone, email) VALUES ('Provider A', '123 Main St', '555-1234', 'providerA@example.com');
-INSERT INTO provider (name, address, phone, email) VALUES ('Provider B', '456 Elm St', '555-5678', 'providerB@example.com');
+INSERT INTO supplier (name, address, phone, email) VALUES ('Provider A', '123 Main St', '555-1234', 'providerA@example.com');
+INSERT INTO supplier (name, address, phone, email) VALUES ('Provider B', '456 Elm St', '555-5678', 'providerB@example.com');
 
 -- Insertar medicamentos
-INSERT INTO product (name, description, category_id, provider_id, price_purchase, price_sell, stock_initial, stock_current) VALUES ('Product 1', 'Product 1 description', 1, 1, 10.0, 15.0, 100, 100);
-INSERT INTO product (name, description, category_id, provider_id, price_purchase, price_sell, stock_initial, stock_current) VALUES ('Product 2', 'Product 2 description', 2, 2, 20.0, 25.0, 150, 150);
+INSERT INTO product (name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current) VALUES ('Product 1', 'Product 1 description', 1, 1, 10.0, 15.0, 100, 100);
+INSERT INTO product (name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current) VALUES ('Product 2', 'Product 2 description', 2, 2, 20.0, 25.0, 150, 150);
 
 -- Insertar relaciones de roles y permisos (ejemplo: asignar todos los permisos al rol de administrador)
 INSERT INTO role_permission (role_id, permission_id) VALUES (1, 1);
