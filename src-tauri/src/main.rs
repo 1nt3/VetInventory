@@ -7,8 +7,8 @@ mod models;
 mod repository;
 
 use database::Database;
-use handlers::product_manager::create_product;
 use handlers::login::is_credential_valid;
+use handlers::product_manager::create_product;
 
 use tauri::async_runtime::block_on;
 
