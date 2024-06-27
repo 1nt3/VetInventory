@@ -4,24 +4,18 @@
 mod database;
 mod handlers;
 mod models;
+mod repository;
 
 use database::Database;
 use handlers::login::is_credential_valid;
-//use handlers::panel::
 
 use tauri::async_runtime::block_on;
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 fn main() {
-    let database: Database = block_on(Database::connect()).expect("Failed connection.");
-    block_on(database.migrate()).expect("Failed migration.");
+    let database = block_on(Database::connect()).expect("Error connecting database.");
     tauri::Builder::default()
-        .manage(database) // Add Arc<Mutex<Database>> State.
-        .invoke_handler(tauri::generate_handler![greet, is_credential_valid]) //, create_user])
+        .manage(database)
+        .invoke_handler(tauri::generate_handler![is_credential_valid])
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("Failed to run Tauri application");
 }
