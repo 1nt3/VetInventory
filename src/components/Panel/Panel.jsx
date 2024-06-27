@@ -26,8 +26,6 @@ const Panel = () => {
     }
   };
 
-
-
   const getCurrentViewTitle = () => {
     switch (currentViewId) {
       case "productos":
@@ -59,12 +57,18 @@ const Panel = () => {
           <nav className="menu">
             <ul>
               <li>
-                <a href="#product-management" onClick={() => setCurrentViewId("productos")}>
+                <a
+                  href="#product-management"
+                  onClick={() => setCurrentViewId("productos")}
+                >
                   Gestión de productos
                 </a>
               </li>
               <li>
-                <a href="#inventory" onClick={() => setCurrentViewId("existencias")}>
+                <a
+                  href="#inventory"
+                  onClick={() => setCurrentViewId("existencias")}
+                >
                   Existencias
                 </a>
               </li>
