@@ -1,81 +1,126 @@
 import React, { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
-import { useNavigate } from "react-router-dom";
-import "./LoginSignup.css";
 
-import email_icon from "../../assets/email.png";
-import password_icon from "../../assets/password.png";
-
-const LoginSignup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const ProductEntry = () => {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [categoryId, setCategoryId] = useState(1); // SOLO DE EJEMPLO, ELIMINAR DESPUES
+  const [supplierId, setSupplierId] = useState(1); // SOLO DE EJEMPLO, ELIMINAR DESPUES
 
-  const handleLogin = async () => {
+  useEffect(() => {
+    //fetchCategories();
+    //fetchSuppliers();
+  }, []);
+
+  /*
+  const fetchCategories = async () => {
     try {
-      setLoading(true);
-      await authenticateUser(email, password);
-      navigate("/panel");
+      const response = await invoke("get_categories");
+      setCategories(response);
     } catch (error) {
-      setError("Error login.");
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const response = await invoke("get_suppliers");
+      setSuppliers(response);
+    } catch (error) {
+      console.error("Failed to fetch suppliers:", error);
+    }
+  };
+  */
+
+  const createProduct = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const newProduct = await invoke("create_product", {
+        name,
+        description,
+        categoryId,
+        supplierId,
+        //category,
+        //supplier,
+      });
+      setSuccessMessage("Product created successfully!");
+      // Optionally, update state or perform other actions upon successful product creation
+    } catch (error) {
+      setError("Failed to create product. Please try again. " + error);
     } finally {
       setLoading(false);
     }
   };
 
-  const authenticateUser = async (email, password) => {
-    const isValid = await invoke("is_credential_valid", {
-      email,
-      password,
-    });
-
-    if (!isValid) {
-      throw new Error("Correo o contraseña incorrectos.");
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createProduct();
   };
 
   return (
-    <div className="container">
-      <div className="header">
-        <div className="text">Inventario</div>
-        <div className="underline"></div>
-      </div>
-      <div className="inputs">
-        <div className="input">
-          <img src={email_icon} alt="" />
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
-        </div>
-        <div className="input">
-          <img src={password_icon} alt="" />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+        </label>
+        <label>
+          Category:
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select a category</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Supplier:
+          <select
+            value={supplier}
+            onChange={(e) => setSupplier(e.target.value)}
+          >
+            <option value="">Select a supplier</option>
+            {suppliers.map((sup) => (
+              <option key={sup.id} value={sup.id}>
+                {sup.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Description:
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
-        </div>
-      </div>
-      {error && <div className="error">{error}</div>}
-      {loading && (
-        <div className="loading">
-          <div className="loader"></div>
-          <p>Cargando...</p>
-        </div>
-      )}
-      <div className="submit-container">
-        <div className="submit" onClick={handleLogin}>
-          Ingresar
-        </div>
-      </div>
+        </label>
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating Product..." : "Create Product"}
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      </form>
     </div>
   );
 };
 
-export default LoginSignup;
+export default ProductEntry;
