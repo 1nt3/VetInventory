@@ -1,5 +1,5 @@
+pub mod gestion_productos;
 pub mod login;
-pub mod panel;
 
 /*
 struct Square {
