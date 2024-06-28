@@ -1,3 +1,5 @@
+/* ESTE COMPONENTE ES SOLO PARA TESTEO */
+
 import React, { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 
