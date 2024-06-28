@@ -19,10 +19,7 @@ pub async fn is_credential_valid(
     );
 
     match query.fetch_one(&mut *pool_conn).await {
-        Ok(result) => {
-            println!("{:?}", result);
-            Ok(true)
-        }
+        Ok(_result) => Ok(true),
         Err(sqlx::Error::RowNotFound) => Ok(false),
         Err(e) => Err(format!("Failed to execute query: {}", e)),
     }

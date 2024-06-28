@@ -8,7 +8,7 @@ mod repository;
 
 use database::Database;
 use handlers::login::is_credential_valid;
-use handlers::product_manager::create_product;
+use handlers::product_manager::{create_product, get_products};
 
 use tauri::async_runtime::block_on;
 
@@ -18,7 +18,8 @@ fn main() {
         .manage(database)
         .invoke_handler(tauri::generate_handler![
             is_credential_valid,
-            create_product
+            create_product,
+            get_products
         ])
         .run(tauri::generate_context!())
         .expect("Failed to run Tauri application");
