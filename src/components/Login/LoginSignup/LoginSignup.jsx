@@ -2,8 +2,19 @@ import React, { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { useNavigate } from "react-router-dom";
 import "./LoginSignup.css";
-import emailIcon from "../../assets/email.png";
-import passwordIcon from "../../assets/password.png";
+import emailIcon from "../../../assets/email.png";
+import passwordIcon from "../../../assets/password.png";
+
+const authenticateUser = async (email, password) => {
+  const isCredentialValid = await invoke("is_credential_valid", {
+    email,
+    password,
+  });
+
+  if (!isCredentialValid) {
+    throw new Error("Correo o contraseña incorrectos.");
+  }
+};
 
 const LoginSignup = ({ setAuthenticated }) => {
   const [email, setEmail] = useState("");
@@ -13,26 +24,17 @@ const LoginSignup = ({ setAuthenticated }) => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setLoading(true);
+    setError("");
+
     try {
-      setLoading(true);
       await authenticateUser(email, password);
-      setAuthenticated(true); 
-      navigate("/loading"); 
-    } catch (error) {
-      setError(error.message);
+      setAuthenticated(true);
+      navigate("/loading");
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const authenticateUser = async (email, password) => {
-    const isValid = await invoke("is_credential_valid", {
-      email,
-      password,
-    });
-
-    if (!isValid) {
-      throw new Error("Correo o contraseña incorrectos.");
     }
   };
 
@@ -44,24 +46,20 @@ const LoginSignup = ({ setAuthenticated }) => {
           <div className="underline"></div>
         </header>
         <div className="inputs">
-          <div className="input">
-            <img src={emailIcon} alt="Email" />
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="input">
-            <img src={passwordIcon} alt="Password" />
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <InputField
+            icon={emailIcon}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <InputField
+            icon={passwordIcon}
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         {error && <div className="error">{error}</div>}
         {loading && (
@@ -79,5 +77,17 @@ const LoginSignup = ({ setAuthenticated }) => {
     </div>
   );
 };
+
+const InputField = ({ icon, type, placeholder, value, onChange }) => (
+  <div className="input">
+    <img src={icon} alt={placeholder} className={`${type}-icon`} />
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
+  </div>
+);
 
 export default LoginSignup;
