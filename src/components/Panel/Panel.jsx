@@ -1,195 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Panel.css";
-
-// Componentes para las diferentes vistas
-const Productos = () => (
-  <div className="productos">
-    <h2>Gestión de Productos</h2>
-    <button className="add-button">Agregar</button>
-    <button className="edit-button">Editar</button>
-    <button className="delete-button">Eliminar</button>
-    <table className="productos-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Categoría</th>
-          <th>Proveedor</th>
-          <th>Descripción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
-
-const Categorias = () => (
-  <div className="categorias">
-    <h2>Gestión de Categorías</h2>
-    <button className="add-button">Agregar</button>
-    <button className="edit-button">Editar</button>
-    <button className="delete-button">Eliminar</button>
-    <table className="categorias-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
-
-const Proveedores = () => (
-  <div className="proveedores">
-    <h2>Gestión de Proveedores</h2>
-    <button className="add-button">Agregar</button>
-    <button className="edit-button">Editar</button>
-    <button className="delete-button">Eliminar</button>
-    <table className="proveedores-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Correo</th>
-          <th>Telefono</th>
-          <th>Dirección</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
-
-const Existencias = () => (
-  <div className="existencias">
-    <h2>Existencias</h2>
-    <div className="header">
-      <button className="add-button">Agregar</button>
-      <button className="edit-button">Editar</button>
-      <button className="delete-button">Eliminar</button>
-      <button className="report-button">Reporte</button>
-    </div>
-    <table className="existencias-table">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Categoría</th>
-          <th>Proveedor</th>
-          <th>Stock inicial</th>
-          <th>Stock actual</th>
-          <th>Precio compra</th>
-          <th>Precio venta</th>
-          <th>Entrada por</th>
-          <th>Fecha entrada</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
-
-const Usuarios = () => (
-  <div className="usuarios">
-    <h2>Usuarios</h2>
-    <div className="header">
-      <button className="add-button">Agregar</button>
-      <button className="edit-button">Editar</button>
-      <button className="delete-button">Eliminar</button>
-    </div>
-    <table className="usuarios-table">
-      <thead>
-        <tr>
-          <th>Nombre completo</th>
-          <th>Correo</th>
-          <th>Rol</th>
-          <th>Contraseña</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-);
+import Usuarios from "./Usuarios/Usuarios";
+import ProductManagement from "./ProductManagement/ProductManagement";
+import Inventory from "./Inventory/Inventory";
 
 const Panel = ({ setAuthenticated }) => {
-  const [currentViewId, setCurrentViewId] = useState("productos");
+  const [currentViewId, setCurrentViewId] = useState("product-management");
   const navigate = useNavigate();
 
   const renderCurrentView = () => {
     switch (currentViewId) {
-      case "productos":
-        return <Productos />;
-      case "categorias":
-        return <Categorias />;
-      case "proveedores":
-        return <Proveedores />;
+      case "product-management":
+        return <ProductManagement />;
       case "existencias":
-        return <Existencias />;
+        return <Inventory />;
       case "usuarios":
         return <Usuarios />;
       default:
-        return <Productos />;
+        return <ProductManagement />;
     }
   };
 
   const handleLogout = () => {
     setAuthenticated(false);
     navigate("/logout-loading");
-  };
-
-  const getCurrentViewTitle = () => {
-    switch (currentViewId) {
-      case "productos":
-        return "Gestión de Productos";
-      case "categorias":
-        return "Gestión de Categorías";
-      case "proveedores":
-        return "Gestión de Proveedores";
-      case "existencias":
-        return "Existencias";
-      case "usuarios":
-        return "Gestión de Usuarios";
-      default:
-        return "Gestión de Productos";
-    }
   };
 
   return (
@@ -208,7 +43,10 @@ const Panel = ({ setAuthenticated }) => {
               <li>
                 <a
                   href="#product-management"
-                  onClick={() => setCurrentViewId("productos")}
+                  className={
+                    currentViewId === "product-management" ? "active" : ""
+                  }
+                  onClick={() => setCurrentViewId("product-management")}
                 >
                   Gestión de productos
                 </a>
@@ -216,13 +54,18 @@ const Panel = ({ setAuthenticated }) => {
               <li>
                 <a
                   href="#inventory"
+                  className={currentViewId === "existencias" ? "active" : ""}
                   onClick={() => setCurrentViewId("existencias")}
                 >
                   Existencias
                 </a>
               </li>
               <li>
-                <a href="#users" onClick={() => setCurrentViewId("usuarios")}>
+                <a
+                  href="#users"
+                  className={currentViewId === "usuarios" ? "active" : ""}
+                  onClick={() => setCurrentViewId("usuarios")}
+                >
                   Usuarios
                 </a>
               </li>
@@ -232,32 +75,7 @@ const Panel = ({ setAuthenticated }) => {
             Cerrar sesión
           </button>
         </aside>
-        <main className="main-content">
-          <h1>{getCurrentViewTitle()}</h1>
-          {currentViewId !== "existencias" && currentViewId !== "usuarios" && (
-            <div className="product-management">
-              <button
-                className="product-button"
-                onClick={() => setCurrentViewId("productos")}
-              >
-                Productos
-              </button>
-              <button
-                className="category-button"
-                onClick={() => setCurrentViewId("categorias")}
-              >
-                Categorías
-              </button>
-              <button
-                className="supplier-button"
-                onClick={() => setCurrentViewId("proveedores")}
-              >
-                Proveedores
-              </button>
-            </div>
-          )}
-          <div className="view-content">{renderCurrentView()}</div>
-        </main>
+        <main className="main-content">{renderCurrentView()}</main>
       </div>
     </div>
   );
