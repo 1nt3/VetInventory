@@ -1,8 +1,180 @@
-.table-wrapper {
-    max-height: 300 px;
-    width: 100%;
+.products-container {
+    padding: 20px;
+}
 
-    /* Ajusta la altura según tus necesidades */
+.table-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.actions {
+    margin-bottom: 20px;
+}
+
+.add-button {
+    padding: 10px 20px;
+    background-color: #00b33c73;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-button:hover {
+    background-color: #00b33c73;
+}
+
+.table-wrapper {
+    max-height: 300px;
     overflow-y: auto;
     border: 1px solid #ddd;
 }
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    color: black; /* Asegurar que el texto sea negro */
+}
+
+.products-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+    color: black; /* Asegurar que el texto sea negro */
+}
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+    color: black; /* Asegurar que el texto sea negro */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-product-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-product-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    padding: 5px 10px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.delete-button:hover {
+    background-color: #d9363e;
+}
+
+.cancel-delete-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.cancel-delete-button:hover {
+    background-color: #e0e0e0;
+}
+
+.confirm-delete-button {
+    padding: 10px 20px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.confirm-delete-button:hover {
+    background-color: #e2797fc5;
+}
+
+.confirm-delete-button:disabled {
+    background-color: #ffcccb;
+    cursor: not-allowed;
+}
+
+.cancel-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.cancel-button:hover {
+    background-color: #e0e0e0;
+}
+
+.edit-button {
+    padding: 10px 20px;
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+  
+.edit-button:hover {
+    background-color: #4053c09d;
+}
+
+.cancel-edit-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+  
+.cancel-edit-button:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+  
