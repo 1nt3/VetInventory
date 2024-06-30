@@ -1,19 +1,18 @@
 import React from "react";
 
 const Usuarios = () => (
-  <div className="usuarios">
-    <h2>Usuarios</h2>
-    <div className="header">
+  <div className="table-container">
+    <h2 className="table-title">Usuarios</h2>
+    <div className="actions">
       <button className="add-button">Agregar</button>
       <button className="edit-button">Editar</button>
       <button className="delete-button">Eliminar</button>
     </div>
-    <table className="usuarios-table">
+    <table className="users-table">
       <thead>
         <tr>
-          <th>Nombre completo</th>
+
           <th>Correo</th>
-          <th>Rol</th>
           <th>Contraseña</th>
         </tr>
       </thead>
@@ -21,8 +20,7 @@ const Usuarios = () => (
         <tr>
           <td></td>
           <td></td>
-          <td></td>
-          <td></td>
+
         </tr>
       </tbody>
     </table>

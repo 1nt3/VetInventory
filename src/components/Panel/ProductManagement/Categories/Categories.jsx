@@ -24,22 +24,24 @@ const Categories = () => {
         <button className="edit-button">Editar</button>
         <button className="delete-button">Eliminar</button>
       </div>
-      <table className="categories-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Cantidad de productos</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((category, index) => (
-            <tr key={index}>
-              <td>{category.nombre}</td>
-              <td>{category.cantidad_productos}</td>
+      <div className="table-wrapper">
+        <table className="categories-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Cantidad de productos</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {categories.map((category, index) => (
+              <tr key={index}>
+                <td>{category.nombre}</td>
+                <td>{category.cantidad_productos}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
