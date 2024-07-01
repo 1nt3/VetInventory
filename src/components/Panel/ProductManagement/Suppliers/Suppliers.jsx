@@ -16,12 +16,8 @@ const fetchSuppliers = async () => {
 
 const createSupplier = async (supplier) => {
   try {
-    const { name, email, phone, address } = supplier;
     const response = await invoke("create_supplier", {
-      name,
-      email,
-      phone,
-      address,
+      ...supplier,
     });
     return response;
   } catch (error) {
@@ -30,9 +26,12 @@ const createSupplier = async (supplier) => {
   }
 };
 
-const updateSupplier = async (supplier) => {
+const updateSupplier = async (supplierId, supplier) => {
   try {
-    const response = await invoke("update_supplier", supplier);
+    const response = await invoke("update_supplier", {
+      supplierId,
+      ...supplier,
+    });
     return response;
   } catch (error) {
     console.error("Error updating supplier:", error);
@@ -42,7 +41,7 @@ const updateSupplier = async (supplier) => {
 
 const deleteSupplier = async (supplierId) => {
   try {
-    const response = await invoke("delete_supplier", { id: supplierId });
+    const response = await invoke("delete_supplier", { supplierId });
     return response;
   } catch (error) {
     console.error("Error deleting supplier:", error);
@@ -243,7 +242,10 @@ const Suppliers = () => {
         <div className="confirmation-message">
           <p>¿Está seguro de que desea eliminar este proveedor?</p>
           <div className="form-actions">
-            <button className="confirm-delete-button" onClick={handleDeleteSubmit}>
+            <button
+              className="confirm-delete-button"
+              onClick={handleDeleteSubmit}
+            >
               Confirmar
             </button>
             <button className="cancel-delete-button" onClick={handleCloseModal}>

@@ -45,9 +45,19 @@ const createProduct = async (product) => {
   }
 };
 
-const updateProduct = async (product) => {
+const updateProduct = async (productId, product) => {
   try {
-    const response = await invoke("update_product", product);
+    const { name, description, category_id, supplier_id } = product;
+    const categoryId = parseInt(category_id);
+    const supplierId = parseInt(supplier_id);
+
+    const response = await invoke("update_product", {
+      productId,
+      name,
+      description,
+      categoryId,
+      supplierId,
+    });
     return response;
   } catch (error) {
     console.error("Error updating product:", error);
@@ -57,7 +67,7 @@ const updateProduct = async (product) => {
 
 const deleteProduct = async (productId) => {
   try {
-    const response = await invoke("delete_product", { id: productId });
+    const response = await invoke("delete_product", { productId });
     return response;
   } catch (error) {
     console.error("Error deleting product:", error);
@@ -89,7 +99,6 @@ const Products = () => {
     isEditModalOpen,
     isDeleteModalOpen,
     formValues,
-    selectedItem,
     handleAddButtonClick,
     handleEditButtonClick,
     handleDeleteButtonClick,
@@ -311,10 +320,12 @@ const Products = () => {
         <div className="confirmation-message">
           <p>¿Está seguro de que desea eliminar este producto?</p>
           <div className="form-actions">
-            <button className="confirm-delete-button" onClick={handleDeleteSubmit}>
+            <button
+              className="confirm-delete-button"
+              onClick={handleDeleteSubmit}
+            >
               Confirmar
             </button>
-
           </div>
         </div>
       </Modal>

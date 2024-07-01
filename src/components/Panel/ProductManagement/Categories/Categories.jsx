@@ -14,12 +14,21 @@ const fetchCategories = async () => {
   }
 };
 
+const fetchProductsByCategory = async () => {
+  try {
+    const response = await invoke("get_amount_products_by_category");
+    return response;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+};
+
 const createCategory = async (category) => {
   try {
-    const { name, product_count } = category;
+    const { name } = category;
     const response = await invoke("create_category", {
       name,
-      product_count: parseInt(product_count),
     });
     return response;
   } catch (error) {
@@ -28,9 +37,10 @@ const createCategory = async (category) => {
   }
 };
 
-const updateCategory = async (category) => {
+const updateCategory = async (categoryId, category) => {
   try {
-    const response = await invoke("update_category", category);
+    const { name } = category;
+    const response = await invoke("update_category", { categoryId, name });
     return response;
   } catch (error) {
     console.error("Error updating category:", error);
@@ -40,7 +50,7 @@ const updateCategory = async (category) => {
 
 const deleteCategory = async (categoryId) => {
   try {
-    const response = await invoke("delete_category", { id: categoryId });
+    const response = await invoke("delete_category", { categoryId });
     return response;
   } catch (error) {
     console.error("Error deleting category:", error);
@@ -53,6 +63,16 @@ const Categories = () => {
     name: "",
     product_count: 0,
   };
+
+  const [productsByCategories, setProductsByCategories] = useState([]);
+
+  useEffect(() => {
+    const loadItems = async () => {
+      const data = await fetchProductsByCategory();
+      setProductsByCategories(data);
+    };
+    loadItems();
+  }, [productsByCategories]);
 
   const {
     items: categories,
@@ -77,6 +97,13 @@ const Categories = () => {
     initialFormValues
   );
 
+  const getAmountProductByCategory = (id) => {
+    const category = productsByCategories.find(
+      (category) => category.id === id
+    );
+    return category ? category.product_count : 0;
+  };
+
   return (
     <div className="table-container">
       <h2 className="table-title">Categorías</h2>
@@ -98,7 +125,7 @@ const Categories = () => {
             {categories.map((category, index) => (
               <tr key={index}>
                 <td>{category.name}</td>
-                <td>{category.product_count}</td>
+                <td>{getAmountProductByCategory(category.id)}</td>
                 <td>
                   <button
                     className="edit-button"
@@ -198,7 +225,10 @@ const Categories = () => {
         <div className="confirmation-message">
           <p>¿Está seguro de que desea eliminar esta categoría?</p>
           <div className="form-actions">
-            <button className="confirm-delete-button" onClick={handleDeleteSubmit}>
+            <button
+              className="confirm-delete-button"
+              onClick={handleDeleteSubmit}
+            >
               Confirmar
             </button>
           </div>
