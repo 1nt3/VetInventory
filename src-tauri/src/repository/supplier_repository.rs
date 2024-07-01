@@ -48,8 +48,11 @@ impl Repository<Supplier> for SupplierRepository {
 
     async fn update(&mut self, supplier: Supplier) -> Result<(), SqlxError> {
         sqlx::query!(
-            "UPDATE supplier SET name = ? WHERE id = ?",
+            "UPDATE supplier SET name = ?, address = ?, phone = ?, email = ? WHERE id = ?",
             supplier.name,
+            supplier.address,
+            supplier.phone,
+            supplier.email,
             supplier.id
         )
         .execute(&mut *self.pool)
