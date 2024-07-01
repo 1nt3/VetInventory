@@ -9,8 +9,8 @@ const Products = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     category_id: 0,
     supplier_id: 0,
   });
@@ -54,8 +54,8 @@ const Products = () => {
 
   const handleAddButtonClick = () => {
     setFormValues({
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       category_id: 0,
       supplier_id: 0,
     });
@@ -87,8 +87,8 @@ const Products = () => {
     try {
       if (isEditMode) {
         await invoke("update_product", {
-          name,
           id: selectedProducts[0],
+          name,
           description,
           categoryId,
           supplierId,
@@ -104,7 +104,10 @@ const Products = () => {
       fetchProducts();
       handleCloseModal();
     } catch (error) {
-      console.error(`Error al ${isEditMode ? "editar" : "agregar"} el producto:`, error);
+      console.error(
+        `Error al ${isEditMode ? "editar" : "agregar"} el producto:`,
+        error
+      );
     }
   };
 
@@ -116,53 +119,53 @@ const Products = () => {
   const getSupplierName = (id) => {
     const supplier = suppliers.find((supplier) => supplier.id === id);
     return supplier ? supplier.name : "";
-
   };
+
   const handleDeleteButtonClick = () => {
     setSelectedProducts([]);
     setIsDeleteMode(!isDeleteMode);
-
   };
+
   const handleProductSelect = (productId) => {
-      setSelectedProducts([productId]);
     if (isEditMode) {
+      const selectedProduct = products.find((p) => p.id === productId);
+      if (selectedProduct) {
         setFormValues({
           name: selectedProduct.name,
           category_id: selectedProduct.category_id,
           supplier_id: selectedProduct.supplier_id,
           description: selectedProduct.description,
-      if (selectedProduct) {
-      const selectedProduct = products.find(p => p.id === productId);
         });
+        setSelectedProducts([productId]);
         setIsModalOpen(true);
       }
     } else {
-      setSelectedProducts(prevSelected =>
+      setSelectedProducts((prevSelected) =>
         prevSelected.includes(productId)
-          ? prevSelected.filter(id => id !== productId)
+          ? prevSelected.filter((id) => id !== productId)
           : [...prevSelected, productId]
       );
     }
   };
 
   const handleConfirmDeleteClick = () => {
-  };
+    if (selectedProducts.length > 0) {
       setIsDeleteModalOpen(true);
     }
-    if (selectedProducts.length > 0) {
+  };
 
-    try {
   const handleConfirmDelete = async () => {
-      setSelectedProducts([]);
+    try {
       await invoke("delete_products", { productIds: selectedProducts });
       fetchProducts();
       setIsDeleteModalOpen(false);
       setIsDeleteMode(false);
+      setSelectedProducts([]);
     } catch (error) {
       console.error("Error al eliminar los productos:", error);
     }
-
   };
+
   return (
     <div className="products-container">
       <h2 className="table-title">Productos</h2>
@@ -210,24 +213,32 @@ const Products = () => {
               <tr key={product.id}>
                 {(isDeleteMode || isEditMode) && (
                   <td>
-                      type="checkbox"
                     <input
-                )}
-                  </td>
-                      disabled={isEditMode && selectedProducts.length === 1 && !selectedProducts.includes(product.id)}
+                      type="checkbox"
+                      disabled={
+                        isEditMode &&
+                        selectedProducts.length === 1 &&
+                        !selectedProducts.includes(product.id)
+                      }
                       onChange={() => handleProductSelect(product.id)}
                       checked={selectedProducts.includes(product.id)}
                     />
+                  </td>
+                )}
                 <td>{product.name}</td>
                 <td>{getCategoryName(product.category_id)}</td>
                 <td>{getSupplierName(product.supplier_id)}</td>
                 <td>{product.description}</td>
               </tr>
             ))}
-        </table>
           </tbody>
+        </table>
       </div>
-      <Modal title={isEditMode ? "Editar Producto" : "Agregar Producto"} isOpen={isModalOpen} onClose={handleCloseModal}>
+      <Modal
+        title={isEditMode ? "Editar Producto" : "Agregar Producto"}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      >
         <form onSubmit={handleSubmit} className="product-form">
           <div className="form-group">
             <label>Nombre:</label>
@@ -287,11 +298,25 @@ const Products = () => {
           </div>
         </form>
       </Modal>
-      <Modal title="Confirmar Eliminación" isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
+      <Modal
+        title="Confirmar Eliminación"
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      >
         <p>¿Está seguro de que desea eliminar los productos seleccionados?</p>
         <div className="form-actions">
-          <button onClick={() => setIsDeleteModalOpen(false)} className="cancel-button">Cancelar</button>
-          <button onClick={handleConfirmDelete} className="confirm-delete-button">Confirmar</button>
+          <button
+            onClick={() => setIsDeleteModalOpen(false)}
+            className="cancel-button"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleConfirmDelete}
+            className="confirm-delete-button"
+          >
+            Confirmar
+          </button>
         </div>
       </Modal>
     </div>
