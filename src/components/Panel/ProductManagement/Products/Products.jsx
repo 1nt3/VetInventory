@@ -5,6 +5,8 @@ import "./Products.css";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -15,15 +17,34 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
+    fetchSuppliers();
   }, []);
 
   const fetchProducts = async () => {
     try {
       const response = await invoke("get_products");
-      console.log(response);
       setProducts(response);
     } catch (error) {
       console.error("Error al obtener los productos:", error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await invoke("get_categories");
+      setCategories(response);
+    } catch (error) {
+      console.error("Error al obtener las categorías:", error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const response = await invoke("get_suppliers");
+      setSuppliers(response);
+    } catch (error) {
+      console.error("Error al obtener los proveedores:", error);
     }
   };
 
@@ -42,24 +63,30 @@ const Products = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const name = formValues.name;
-    const description = formValues.description;
-    const categoryId = parseInt(formValues.category_id);
-    const supplierId = parseInt(formValues.supplier_id);
-    console.log("Datos del formulario:", formValues);
+    const { name, description, category_id, supplier_id } = formValues;
 
     try {
       await invoke("create_product", {
         name,
         description,
-        categoryId,
-        supplierId,
+        categoryId: parseInt(category_id),
+        supplierId: parseInt(supplier_id),
       });
       fetchProducts(); // Recargar la lista de productos después de agregar uno nuevo
       handleCloseModal();
     } catch (error) {
       console.error("Error al agregar el producto:", error);
     }
+  };
+
+  const getCategoryName = (id) => {
+    const category = categories.find((category) => category.id === id);
+    return category ? category.name : "";
+  };
+
+  const getSupplierName = (id) => {
+    const supplier = suppliers.find((supplier) => supplier.id === id);
+    return supplier ? supplier.name : "";
   };
 
   return (
@@ -86,8 +113,8 @@ const Products = () => {
             {products.map((product, index) => (
               <tr key={index}>
                 <td>{product.name}</td>
-                <td>{product.category_id}</td>
-                <td>{product.supplier_id}</td>
+                <td>{getCategoryName(product.category_id)}</td>
+                <td>{getSupplierName(product.supplier_id)}</td>
                 <td>{product.description}</td>
               </tr>
             ))}
@@ -113,23 +140,35 @@ const Products = () => {
           </div>
           <div className="form-group">
             <label>Categoría:</label>
-            <input
-              type="number"
+            <select
               name="category_id"
               value={formValues.category_id}
               onChange={handleInputChange}
               required
-            />
+            >
+              <option value="">Seleccione una categoría</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label>Proveedor:</label>
-            <input
-              type="number"
+            <select
               name="supplier_id"
               value={formValues.supplier_id}
               onChange={handleInputChange}
               required
-            />
+            >
+              <option value="">Seleccione un proveedor</option>
+              {suppliers.map((supplier) => (
+                <option key={supplier.id} value={supplier.id}>
+                  {supplier.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label>Descripción:</label>
