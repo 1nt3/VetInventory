@@ -58,7 +58,7 @@ const useActions = (
 
   const handleEditSubmit = async (event) => {
     event.preventDefault();
-    await updateItem(formValues);
+    await updateItem(selectedItem.id, formValues);
     setIsEditModalOpen(false);
     setItems(await fetchItems());
   };
