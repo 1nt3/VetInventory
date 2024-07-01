@@ -301,6 +301,23 @@ const Products = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Modal para confirmar eliminación */}
+      <Modal
+        title="Confirmar Eliminación"
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseModal}
+      >
+        <div className="confirmation-message">
+          <p>¿Está seguro de que desea eliminar este producto?</p>
+          <div className="form-actions">
+            <button className="confirm-delete-button" onClick={handleDeleteSubmit}>
+              Confirmar
+            </button>
+
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
