@@ -1,33 +1,13 @@
-.products-container {
+.table-container {
     padding: 20px;
-}
-
-.table-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.actions {
-    margin-bottom: 20px;
-}
-
-.add-button {
-    padding: 10px 20px;
-    background-color: #00b33c73;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.add-button:hover {
-    background-color: #00b33c73;
+    max-width: 100%;
 }
 
 .table-wrapper {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
+    overflow-x: auto;
+    max-height: 400px;
+    /* Ajusta la altura máxima según tus necesidades */
+    position: relative;
 }
 
 .products-table {
@@ -39,142 +19,60 @@
 .products-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    color: black; /* Asegurar que el texto sea negro */
 }
 
 .products-table th {
     background-color: #f2f2f2;
     text-align: left;
-    color: black; /* Asegurar que el texto sea negro */
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
-.product-form {
-    display: flex;
-    flex-direction: column;
-    color: black; /* Asegurar que el texto sea negro */
+.table-title {
+    margin-bottom: 20px;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.edit-button {
+    margin-right: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
-.form-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
+.delete-button {
+    background-color: rgb(186, 32, 32);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
-.form-group input,
-.form-group textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
+.confirm-delete-button {
+    background-color: rgb(186, 32, 32);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.cancel-delete-button {
+    background-color: grey;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 .form-actions {
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
 }
 
-.add-product-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
+.confirmation-message {
+    text-align: center;
 }
-
-.add-product-button:hover {
-    background-color: #0056b3;
-}
-
-.delete-button {
-    padding: 5px 10px;
-    background-color: #ff4d4f;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.delete-button:hover {
-    background-color: #d9363e;
-}
-
-.cancel-delete-button {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.cancel-delete-button:hover {
-    background-color: #e0e0e0;
-}
-
-.confirm-delete-button {
-    padding: 10px 20px;
-    background-color: #ff4d4f;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.confirm-delete-button:hover {
-    background-color: #e2797fc5;
-}
-
-.confirm-delete-button:disabled {
-    background-color: #ffcccb;
-    cursor: not-allowed;
-}
-
-.cancel-button {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.cancel-button:hover {
-    background-color: #e0e0e0;
-}
-
-.edit-button {
-    padding: 10px 20px;
-    background-color: #ffc107;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-left: 10px;
-}
-  
-.edit-button:hover {
-    background-color: #4053c09d;
-}
-
-.cancel-edit-button {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-left: 10px;
-}
-  
-.cancel-edit-button:hover {
-    background-color: #e0e0e0;
-    color: black;
-}
-  
