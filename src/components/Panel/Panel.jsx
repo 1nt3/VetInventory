@@ -71,7 +71,7 @@ const Panel = ({ setAuthenticated }) => {
               </li>
             </ul>
           </nav>
-          <button className="logout-button" onClick={handleLogout} >
+          <button className="logout-button" onClick={handleLogout}>
             Cerrar sesión
           </button>
         </aside>
