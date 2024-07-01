@@ -4,16 +4,13 @@ import Modal from "../Modal";
 import "./Products.css";
 
 const Products = () => {
-
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({
-
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     category_id: 0,
     supplier_id: 0,
-
   });
 
   useEffect(() => {
@@ -44,7 +41,6 @@ const Products = () => {
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     const name = formValues.name;
     const description = formValues.description;
@@ -58,8 +54,6 @@ const Products = () => {
         description,
         categoryId,
         supplierId,
-        //category,
-        //supplier,
       });
       fetchProducts(); // Recargar la lista de productos después de agregar uno nuevo
       handleCloseModal();
@@ -77,19 +71,18 @@ const Products = () => {
         </button>
       </div>
 
+      <div className="table-wrapper">
+        <table className="products-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Proveedor</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
 
-      <table className="products-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Proveedor</th>
-            <th>Descripción</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <div className="table-wrapper">
+          <tbody>
             {products.map((product, index) => (
               <tr key={index}>
                 <td>{product.name}</td>
@@ -98,11 +91,15 @@ const Products = () => {
                 <td>{product.description}</td>
               </tr>
             ))}
-          </div>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
 
-      <Modal title="Agregar Producto" isOpen={isModalOpen} onClose={handleCloseModal}>
+      <Modal
+        title="Agregar Producto"
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      >
         <form onSubmit={handleSubmit} className="product-form">
           <div className="form-group">
             <label>Nombre:</label>
@@ -144,7 +141,9 @@ const Products = () => {
             />
           </div>
           <div className="form-actions">
-            <button type="submit" className="add-product-button">Agregar</button>
+            <button type="submit" className="add-product-button">
+              Agregar
+            </button>
           </div>
         </form>
       </Modal>
