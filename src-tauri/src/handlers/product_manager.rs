@@ -1,10 +1,15 @@
 use crate::{
     database::Database,
-    repository::{product_repository::ProductRepository, Repository},
+    repository::{
+        category_repository::CategoryRepository, product_repository::ProductRepository,
+        supplier_repository::SupplierRepository, Repository,
+    },
 };
 use tauri::State;
 
+use crate::models::category::Category;
 use crate::models::product::Product;
+use crate::models::supplier::Supplier;
 
 #[tauri::command]
 pub async fn create_product(
@@ -58,4 +63,40 @@ pub async fn get_products(state: State<'_, Database>) -> Result<Vec<Product>, St
 
     //println!("Productos {:?}", products);
     Ok(products)
+}
+
+#[tauri::command]
+pub async fn get_categories(state: State<'_, Database>) -> Result<Vec<Category>, String> {
+    let pool_conn = state
+        .clone()
+        .get_connection()
+        .await
+        .map_err(|_| "Failed to get database connection".to_string())?;
+
+    let mut category_rep = CategoryRepository::new(pool_conn);
+    let categories = category_rep
+        .find_all()
+        .await
+        .map_err(|e| format!("Error en la obtención de productos: {}", e))?;
+
+    //println!("Productos {:?}", products);
+    Ok(categories)
+}
+
+#[tauri::command]
+pub async fn get_suppliers(state: State<'_, Database>) -> Result<Vec<Supplier>, String> {
+    let pool_conn = state
+        .clone()
+        .get_connection()
+        .await
+        .map_err(|_| "Failed to get database connection".to_string())?;
+
+    let mut supplier_rep = SupplierRepository::new(pool_conn);
+    let suppliers = supplier_rep
+        .find_all()
+        .await
+        .map_err(|e| format!("Error en la obtención de productos: {}", e))?;
+
+    //println!("Productos {:?}", products);
+    Ok(suppliers)
 }
