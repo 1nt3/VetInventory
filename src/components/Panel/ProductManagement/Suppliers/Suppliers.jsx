@@ -18,14 +18,14 @@ const Suppliers = () => {
   }, []);
 
   return (
-    <div className="table-wrapper">
-      <div className="table-container">
-        <h2 className="table-title">Proveedores</h2>
-        <div className="actions">
-          <button className="add-button">Agregar</button>
-          <button className="edit-button">Editar</button>
-          <button className="delete-button">Eliminar</button>
-        </div>
+    <div className="table-container">
+      <h2 className="table-title">Proveedores</h2>
+      <div className="actions">
+        <button className="add-button">Agregar</button>
+        <button className="edit-button">Editar</button>
+        <button className="delete-button">Eliminar</button>
+      </div>
+      <div className="table-wrapper">
         <table className="suppliers-table">
           <thead>
             <tr>
