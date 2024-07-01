@@ -1,4 +1,6 @@
+pub mod category_repository;
 pub mod product_repository;
+pub mod supplier_repository;
 
 use sqlx::Error as SqlxError;
 
