@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 
-const useProductActions = (fetchItems, createItem, updateItem, deleteItem) => {
+const useActions = (
+  fetchItems,
+  createItem,
+  updateItem,
+  deleteItem,
+  initialFormValues
+) => {
   const [items, setItems] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [formValues, setFormValues] = useState({
-    name: "",
-    description: "",
-    category_id: 0,
-    supplier_id: 0,
-  });
+  const [formValues, setFormValues] = useState(initialFormValues);
 
   useEffect(() => {
     const loadItems = async () => {
@@ -22,12 +23,7 @@ const useProductActions = (fetchItems, createItem, updateItem, deleteItem) => {
   }, [fetchItems]);
 
   const handleAddButtonClick = () => {
-    setFormValues({
-      name: "",
-      description: "",
-      category_id: 0,
-      supplier_id: 0,
-    });
+    setFormValues(initialFormValues); // Reiniciar formValues con los valores iniciales
     setIsAddModalOpen(true);
   };
 
@@ -67,8 +63,7 @@ const useProductActions = (fetchItems, createItem, updateItem, deleteItem) => {
     setItems(await fetchItems());
   };
 
-  const handleDeleteSubmit = async (event) => {
-    event.preventDefault();
+  const handleDeleteSubmit = async () => {
     await deleteItem(selectedItem.id);
     setIsDeleteModalOpen(false);
     setItems(await fetchItems());
@@ -92,4 +87,4 @@ const useProductActions = (fetchItems, createItem, updateItem, deleteItem) => {
   };
 };
 
-export default useProductActions;
+export default useActions;
