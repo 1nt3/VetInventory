@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useProductActions from "../../../../hooks/useProductActions";
+import useActions from "../../../../hooks/useActions";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./Products.css";
 import Modal from "../../../shared/Modal/Modal";
@@ -76,6 +76,13 @@ const fetchCategories = async () => {
 };
 
 const Products = () => {
+  const initialProductFormValues = {
+    name: "",
+    description: "",
+    category_id: 0,
+    supplier_id: 0,
+  };
+
   const {
     items: products,
     isAddModalOpen,
@@ -91,11 +98,12 @@ const Products = () => {
     handleAddSubmit,
     handleEditSubmit,
     handleDeleteSubmit,
-  } = useProductActions(
+  } = useActions(
     fetchProducts,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    initialProductFormValues
   );
 
   const [categories, setCategories] = useState([]);
