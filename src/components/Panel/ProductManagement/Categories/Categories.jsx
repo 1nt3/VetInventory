@@ -8,7 +8,7 @@ const Categories = () => {
   useEffect(() => {
     // Llamada a la función get_categoryos de Tauri
     /*
-    invoke("get_productos")
+    invoke("get_categories")
       .then((response) => {
         setProductos(response);
       })
