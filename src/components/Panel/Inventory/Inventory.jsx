@@ -217,16 +217,28 @@ const Inventory = () => {
         <div className="actions">
 
         </div>
+
         <div className="table-wrapper">
-          <table className="inventory-table">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Stock inicial</th>
-                <th>Stock actual</th>
-                <th>Precio compra</th>
-                <th>Precio venta</th>
-                <th>Acciones</th>
+        <table className="inventory-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Stock inicial</th>
+              <th>Stock actual</th>
+              <th>Precio compra</th>
+              <th>Precio venta</th>
+              <th>Fecha entrada</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={index}>
+                <td>{product.name}</td>
+                <td>{product.stock_initial}</td>
+                <td>{product.stock_current}</td>
+                <td>{product.price_purchase}</td>
+                <td>{product.price_sell}</td>
+                <td>Almacenar fecha de ingreso (pendiente)</td>
               </tr>
             </thead>
             <tbody>
