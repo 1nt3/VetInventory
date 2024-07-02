@@ -17,7 +17,7 @@ impl ProductRepository {
 
 impl Repository<Product> for ProductRepository {
     async fn find_all(&mut self) -> Result<Vec<Product>, SqlxError> {
-        let products = sqlx::query_as!(Product, "SELECT * FROM product;")
+        let products = sqlx::query_as!(Product, "SELECT * FROM product")
             .fetch_all(&mut *self.pool)
             .await?;
 

@@ -17,7 +17,7 @@ impl CategoryRepository {
 
 impl Repository<Category> for CategoryRepository {
     async fn find_all(&mut self) -> Result<Vec<Category>, SqlxError> {
-        let categories = sqlx::query_as!(Category, "SELECT * FROM category;")
+        let categories = sqlx::query_as!(Category, "SELECT * FROM category")
             .fetch_all(&mut *self.pool)
             .await?;
 

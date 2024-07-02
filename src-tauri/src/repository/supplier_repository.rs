@@ -17,7 +17,7 @@ impl SupplierRepository {
 
 impl Repository<Supplier> for SupplierRepository {
     async fn find_all(&mut self) -> Result<Vec<Supplier>, SqlxError> {
-        let suppliers = sqlx::query_as!(Supplier, "SELECT * FROM supplier;")
+        let suppliers = sqlx::query_as!(Supplier, "SELECT * FROM supplier")
             .fetch_all(&mut *self.pool)
             .await?;
 
