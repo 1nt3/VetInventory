@@ -11,7 +11,7 @@ use handlers::login::is_credential_valid;
 use handlers::product_manager::{
     create_category, create_product, create_supplier, delete_category, delete_product,
     delete_supplier, get_amount_products_by_category, get_categories, get_products, get_suppliers,
-    update_category, update_product, update_supplier,
+    update_category, update_inventory, update_product, update_supplier,
 };
 
 use tauri::async_runtime::block_on;
@@ -33,6 +33,7 @@ fn main() {
             delete_category,
             update_category,
             update_supplier,
+            update_inventory,
             get_amount_products_by_category,
             delete_supplier
         ])
