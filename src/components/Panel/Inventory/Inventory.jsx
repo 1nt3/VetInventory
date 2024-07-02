@@ -32,12 +32,14 @@ const Inventory = () => {
         </div>
         <table className="inventory-table">
           <thead>
-            <th>Producto</th>
-            <th>Stock inicial</th>
-            <th>Stock actual</th>
-            <th>Precio compra</th>
-            <th>Precio venta</th>
-            <th>Fecha entrada</th>
+            <tr>
+              <th>Producto</th>
+              <th>Stock inicial</th>
+              <th>Stock actual</th>
+              <th>Precio compra</th>
+              <th>Precio venta</th>
+              <th>Fecha entrada</th>
+            </tr>
           </thead>
           <tbody>
             {products.map((product, index) => (
