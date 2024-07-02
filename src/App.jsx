@@ -12,13 +12,19 @@ import LogoutLoading from "./components/Login/LogoutLoading/LogoutLoading"; // I
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [emailUserCurrent, setEmailUserCurrent] = useState("");
 
   return (
     <Router>
       <Routes>
         <Route
           path="/"
-          element={<LoginSignup setAuthenticated={setIsAuthenticated} />}
+          element={
+            <LoginSignup
+              setAuthenticated={setIsAuthenticated}
+              setEmailUserCurrent={setEmailUserCurrent}
+            />
+          }
         />
         <Route path="/loading" element={<Loading />} />
         <Route path="/logout-loading" element={<LogoutLoading />} />{" "}
@@ -27,7 +33,10 @@ function App() {
           path="/panel"
           element={
             isAuthenticated ? (
-              <Panel setAuthenticated={setIsAuthenticated} />
+              <Panel
+                setAuthenticated={setIsAuthenticated}
+                emailUserCurrent={emailUserCurrent}
+              />
             ) : (
               <Navigate to="/" />
             )
