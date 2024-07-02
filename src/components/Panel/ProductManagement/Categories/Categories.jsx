@@ -80,7 +80,6 @@ const Categories = () => {
     isEditModalOpen,
     isDeleteModalOpen,
     formValues,
-    selectedItem,
     handleAddButtonClick,
     handleEditButtonClick,
     handleDeleteButtonClick,
@@ -152,7 +151,7 @@ const Categories = () => {
         isOpen={isAddModalOpen}
         onClose={handleCloseModal}
       >
-        <form onSubmit={handleAddSubmit} className="category-form">
+        <form onSubmit={handleAddSubmit} className="form">
           <div className="form-group">
             <label>Nombre:</label>
             <input
@@ -163,18 +162,8 @@ const Categories = () => {
               required
             />
           </div>
-          <div className="form-group">
-            <label>Cantidad de productos:</label>
-            <input
-              type="number"
-              name="product_count"
-              value={formValues.product_count}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
           <div className="form-actions">
-            <button type="submit" className="add-category-button">
+            <button type="submit" className="add-button">
               Agregar
             </button>
           </div>
@@ -187,7 +176,7 @@ const Categories = () => {
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
       >
-        <form onSubmit={handleEditSubmit} className="category-form">
+        <form onSubmit={handleEditSubmit} className="form">
           <div className="form-group">
             <label>Nombre:</label>
             <input
@@ -198,18 +187,8 @@ const Categories = () => {
               required
             />
           </div>
-          <div className="form-group">
-            <label>Cantidad de productos:</label>
-            <input
-              type="number"
-              name="product_count"
-              value={formValues.product_count}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
           <div className="form-actions">
-            <button type="submit" className="edit-category-button">
+            <button type="submit" className="edit-button">
               Guardar Cambios
             </button>
           </div>

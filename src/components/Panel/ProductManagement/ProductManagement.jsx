@@ -21,31 +21,33 @@ const ProductManagement = () => {
   };
 
   return (
-    <div className="product-management">
-      <p className="management-title">Gestión de productos</p>
-      {activeSubSection ? (
-        <div className="sub-content">
-          <button
-            className="back-button"
-            onClick={() => setActiveSubSection(null)}
-          >
-            Regresar
-          </button>
-          {renderSubContent()}
-        </div>
-      ) : (
-        <div className="sub-menu">
-          <button onClick={() => setActiveSubSection("Productos")}>
-            Productos
-          </button>
-          <button onClick={() => setActiveSubSection("Categorías")}>
-            Categorías
-          </button>
-          <button onClick={() => setActiveSubSection("Proveedores")}>
-            Proveedores
-          </button>
-        </div>
-      )}
+    <div className="">
+      <div className="product-management">
+        <p className="management-title">Gestión de productos</p>
+        {activeSubSection ? (
+          <div className="sub-content">
+            <button
+              className="back-button"
+              onClick={() => setActiveSubSection(null)}
+            >
+              Regresar
+            </button>
+            {renderSubContent()}
+          </div>
+        ) : (
+          <div className="sub-menu">
+            <button onClick={() => setActiveSubSection("Productos")}>
+              Productos
+            </button>
+            <button onClick={() => setActiveSubSection("Categorías")}>
+              Categorías
+            </button>
+            <button onClick={() => setActiveSubSection("Proveedores")}>
+              Proveedores
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

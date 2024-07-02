@@ -5,7 +5,7 @@ import Usuarios from "./Usuarios/Usuarios";
 import ProductManagement from "./ProductManagement/ProductManagement";
 import Inventory from "./Inventory/Inventory";
 
-const Panel = ({ setAuthenticated }) => {
+const Panel = ({ setAuthenticated, emailUserCurrent }) => {
   const [currentViewId, setCurrentViewId] = useState("product-management");
   const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ const Panel = ({ setAuthenticated }) => {
           <div className="user-info">
             <div className="user-avatar"></div>
             <div className="user-details">
-              <p>example@gmail.com</p>
-              <p>admin</p>
+              <p>{emailUserCurrent}</p>
+              {/*<p>admin</p>*/}
             </div>
           </div>
           <nav className="menu">

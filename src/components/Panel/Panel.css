@@ -1,17 +1,11 @@
-.container {
-  background-color: #dbdbdb;
-  display: flex;
-}
-
 .admin-panel {
+  display: grid;
+  grid-template-columns: 1fr 5fr; /* Sidebar 1/4 y main-content 3/4 */
+  background-color: #dbdbdb;
   height: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
 }
 
 .sidebar {
-  width: 250px;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -67,16 +61,20 @@
 
 .menu a {
   text-decoration: none;
-  color: #333;
+  color: #000000;
   display: block;
   padding: 10px 20px;
   border-radius: 5px;
-  transition: background-color 0.3s;
+  transition: background-color 0.4s ease-in;
 }
 
-.menu a:hover,
+.menu a:hover {
+  background-color: #1284ff;
+  color: #fff;
+}
+
 .menu a.active {
-  background-color: #007bff;
+  background-color: #0056b3;
   color: #fff;
 }
 
@@ -88,7 +86,7 @@
   border-radius: 5px;
   cursor: pointer;
   color: #fff;
-  transition: background-color 0.3s;
+  transition: background-color 0.4s ease-in;
 }
 
 .logout-button:hover {
@@ -98,7 +96,6 @@
 /* Mantener los estilos generales intactos */
 
 .main-content {
-  flex-grow: 1;
   background-color: #fff;
   padding: 20px;
   overflow-y: auto;
@@ -132,7 +129,11 @@
   margin-bottom: 20px;
 }
 
-.actions button {
+.actions button,
+.add-button,
+.edit-button,
+.delete-button,
+.report-button {
   padding: 11px 20px;
   border: none;
   border-radius: 28px;
@@ -141,30 +142,24 @@
   color: #fff;
 }
 
-.actions .add-button {
+.add-button {
   background-color: #59b969;
 }
 
-.actions .edit-button {
+.edit-button {
   background-color: #5a75d3;
 }
 
-.actions .delete-button {
-  background-color: #ba5252;
+.delete-button {
+  background-color: #8a2c2c;
 }
 
-.actions .report-button {
+.report-button {
   background-color: #ff9800;
 }
 
 .table-title {
   color: #333;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
 }
 
 th,
@@ -182,4 +177,32 @@ th {
 
 tr:hover {
   background-color: #f1f1f1;
+}
+
+tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+td,
+th {
+  text-align: center;
+}
+
+tr td:nth-last-child(1) button {
+  margin-left: 20px;
 }

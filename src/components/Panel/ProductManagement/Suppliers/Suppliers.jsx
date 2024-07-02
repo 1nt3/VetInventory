@@ -131,7 +131,7 @@ const Suppliers = () => {
         isOpen={isAddModalOpen}
         onClose={handleCloseModal}
       >
-        <form onSubmit={handleAddSubmit} className="supplier-form">
+        <form onSubmit={handleAddSubmit} className="form">
           <div className="form-group">
             <label>Nombre:</label>
             <input
@@ -173,7 +173,7 @@ const Suppliers = () => {
             />
           </div>
           <div className="form-actions">
-            <button type="submit" className="add-supplier-button">
+            <button type="submit" className="add-button">
               Agregar
             </button>
           </div>
@@ -185,7 +185,7 @@ const Suppliers = () => {
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
       >
-        <form onSubmit={handleEditSubmit} className="supplier-form">
+        <form onSubmit={handleEditSubmit} className="form">
           <div className="form-group">
             <label>Nombre:</label>
             <input
@@ -227,7 +227,7 @@ const Suppliers = () => {
             />
           </div>
           <div className="form-actions">
-            <button type="submit" className="add-supplier-button">
+            <button type="submit" className="add-button">
               Guardar Cambios
             </button>
           </div>
@@ -247,9 +247,6 @@ const Suppliers = () => {
               onClick={handleDeleteSubmit}
             >
               Confirmar
-            </button>
-            <button className="cancel-delete-button" onClick={handleCloseModal}>
-              Cancelar
             </button>
           </div>
         </div>

@@ -17,11 +17,12 @@
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 250px;
+  align-content: center;
 }
 
 .sub-menu button {
-  padding: 20px 25px;
+  padding: 25px 30px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -31,21 +32,21 @@
 }
 
 .sub-menu button:nth-child(1) {
-  background-color: #df9b9b;
+  background-color: #8f2929;
 }
 
 .sub-menu button:nth-child(2) {
-  background-color: #a2e7be;
+  background-color: #408b5e;
 }
 
 .sub-menu button:nth-child(3) {
-  background-color: #dbdc9f;
+  background-color: #aeaf58;
 }
 
 .sub-menu button:hover {
   background-color: #007bff;
   color: #ffffff;
-  transition: background-color 1s ease;
+  transition: background-color 0.4s ease-in;
 }
 
 .sub-content {
@@ -53,7 +54,7 @@
 }
 
 .sub-content .back-button {
-  background-color: #8f8f8f;
+  background-color: #7e7878;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -64,5 +65,5 @@
 .sub-content .back-button:hover {
   background-color: #0056b3;
   color: #ffffff;
-  transition: background-color 1s ease;
+  transition: background-color 0.4s ease-in;
 }
