@@ -2,8 +2,8 @@
 -- Crear tabla user
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  email TEXT,
-  password TEXT
+  email TEXT NOT NULL,
+  password TEXT NOT NULL
 );
 
 -- Crear tabla role
