@@ -1,6 +1,9 @@
-.container {
-  background-color: #dbdbdb;
+.container-login {
+  width: 100%;
+  height: 100%;
+  position: fixed;
   display: flex;
+  background-color: #dbdbdb;
   justify-content: center;
   align-items: center;
 }

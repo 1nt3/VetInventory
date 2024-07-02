@@ -16,7 +16,7 @@ const authenticateUser = async (email, password) => {
   }
 };
 
-const LoginSignup = ({ setAuthenticated }) => {
+const LoginSignup = ({ setAuthenticated, setEmailUserCurrent }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,6 +30,7 @@ const LoginSignup = ({ setAuthenticated }) => {
     try {
       await authenticateUser(email, password);
       setAuthenticated(true);
+      setEmailUserCurrent(email);
       navigate("/loading");
     } catch (err) {
       setError(err.message);
@@ -39,7 +40,7 @@ const LoginSignup = ({ setAuthenticated }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container-login">
       <div className="login">
         <header className="header">
           <h1 className="text">Inventario</h1>
