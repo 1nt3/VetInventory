@@ -47,6 +47,7 @@ CREATE TABLE product (
   price_sell REAL NOT NULL,
   stock_initial INTEGER NOT NULL,
   stock_current INTEGER NOT NULL,
+  utility REAL NOT NULL,
   FOREIGN KEY (category_id) REFERENCES category(id),
   FOREIGN KEY (supplier_id) REFERENCES supplier(id)
 );
