@@ -130,6 +130,7 @@
 }
 
 .actions button,
+.stock-button,
 .add-button,
 .edit-button,
 .delete-button,
@@ -200,6 +201,8 @@ thead {
 
 td,
 th {
+  text-align: center;
+  padding: 10px;
   text-align: center;
 }
 

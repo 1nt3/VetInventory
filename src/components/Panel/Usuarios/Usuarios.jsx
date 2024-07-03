@@ -4,7 +4,6 @@ import "./Usuarios.css";
 import Modal from "../../shared/Modal/Modal";
 import UsersTable from "./UsersTable";
 
-// Funciones para obtener y manejar usuarios
 const fetchUsers = async () => {
   try {
     const response = await invoke("get_users");
@@ -17,10 +16,11 @@ const fetchUsers = async () => {
 
 const createUser = async (user) => {
   try {
-    const { email, password } = user;
+    const { email, password, role_id } = user;
     const response = await invoke("create_user", {
       email,
       password,
+      role_id,
     });
     return response;
   } catch (error) {
@@ -54,10 +54,21 @@ const deleteUser = async (userId) => {
   }
 };
 
+const fetchRoles = async () => {
+  try {
+    const response = await invoke("get_roles");
+    return response;
+  } catch (error) {
+    console.error("Error fetching roles:", error);
+    return [];
+  }
+};
+
 const Usuarios = () => {
   const initialUserFormValues = {
     email: "",
     password: "",
+    role_id: 0,
   };
 
   const [users, setUsers] = useState([]);
@@ -66,11 +77,14 @@ const Usuarios = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [formValues, setFormValues] = useState(initialUserFormValues);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     const loadUsers = async () => {
       const data = await fetchUsers();
       setUsers(data);
+      const roles = await fetchRoles();
+      setRoles(roles);
     };
     loadUsers();
   }, []);
@@ -158,6 +172,22 @@ const Usuarios = () => {
               required
             />
           </div>
+          <div className="form-group">
+            <label>Rol:</label>
+            <select
+              name="role_id"
+              onChange={handleInputChange}
+              value={formValues.role_id}
+              required
+            >
+              <option value={0}>Seleccione un rol</option>
+              {roles.map((rol) => (
+                <option key={rol.id} value={rol.id}>
+                  {rol.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="form-actions">
             <button type="submit" className="add-button">
               Agregar
@@ -190,6 +220,22 @@ const Usuarios = () => {
               onChange={handleInputChange}
               required
             />
+          </div>
+          <div className="form-group">
+            <label>Rol:</label>
+            <select
+              name="role_id"
+              onChange={handleInputChange}
+              value={formValues.role_id}
+              required
+            >
+              <option value={0}>Seleccione un rol</option>
+              {roles.map((rol) => (
+                <option key={rol.id} value={rol.id}>
+                  {rol.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-actions">
             <button type="submit" className="edit-button">

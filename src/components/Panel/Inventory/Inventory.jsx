@@ -3,14 +3,66 @@ import { invoke } from "@tauri-apps/api/tauri";
 import "./Inventory.css";
 import Modal from "../../shared/Modal/Modal";
 
-const fetchProducts = async () => {
+const updatePricesInventory = async (productId, product) => {
   try {
-    const response = await invoke("get_products");
+    const { price_purchase, price_sell } = product;
+
+    const pricePurchase = parseFloat(price_purchase);
+    const priceSell = parseFloat(price_sell);
+    const response = await invoke("update_inventory", {
+      productId,
+      pricePurchase,
+      priceSell,
+    });
     return response;
   } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
+    console.error("Error updating product:", error);
+    throw error;
   }
+};
+
+const deleteProduct = async (productId) => {
+  try {
+    const response = await invoke("delete_product", { productId });
+    return response;
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error;
+  }
+};
+
+const updateUtilityInventory = async (product, saleAmount) => {
+  try {
+    console.log(saleAmount);
+
+    product.utility += calcularUtilidad(
+      product.price_purchase,
+      product.price_sell,
+      saleAmount
+    );
+
+    product.stock_current -= saleAmount;
+
+    const productId = product.id;
+    const utility = product.utility;
+    const stockCurrent = product.stock_current;
+
+    const response = await invoke("update_utility_product", {
+      productId,
+      stockCurrent,
+      utility,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error updating utility:", error);
+    throw error;
+  }
+};
+
+// Función para calcular la utilidad
+const calcularUtilidad = (price_purchase, price_sell, saleAmount) => {
+  const utilidadBruta = 0.81 * (price_sell - price_purchase) * saleAmount;
+  return utilidadBruta;
 };
 
 const Inventory = () => {
@@ -22,29 +74,35 @@ const Inventory = () => {
     stock_current: 0,
   };
 
+  const fetchProducts = async () => {
+    try {
+      const response = await invoke("get_products");
+      return response;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
+    }
+  };
+
   const [products, setProducts] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSaleModalOpen, setIsSaleModalOpen] = useState(false); // Nuevo estado para la modal de ventas
   const [formValues, setFormValues] = useState(initialProductFormValues);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [saleAmount, setSaleAmount] = useState(0); // Estado para la cantidad de ventas
 
   useEffect(() => {
     const loadData = async () => {
-      setProducts(await fetchProducts());
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
     };
     loadData();
-  }, []);
+  }, [fetchProducts]);
 
   const handleEditButtonClick = (product) => {
     setSelectedProduct(product);
     setIsEditModalOpen(true);
-    setFormValues({
-      name: product.name,
-      price_purchase: product.price_purchase,
-      price_sell: product.price_sell,
-      stock_initial: product.stock_initial,
-      stock_current: product.stock_current,
-    });
   };
 
   const handleDeleteButtonClick = (product) => {
@@ -52,11 +110,18 @@ const Inventory = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const handleSaleButtonClick = (product) => {
+    setSelectedProduct(product);
+    setIsSaleModalOpen(true);
+  };
+
   const handleCloseModal = () => {
     setIsEditModalOpen(false);
     setIsDeleteModalOpen(false);
+    setIsSaleModalOpen(false);
     setFormValues(initialProductFormValues);
     setSelectedProduct(null);
+    setSaleAmount(0); // Reiniciar la cantidad de ventas
   };
 
   const handleInputChange = (e) => {
@@ -67,11 +132,14 @@ const Inventory = () => {
     });
   };
 
+  const handleSaleInputChange = (e) => {
+    setSaleAmount(e.target.value);
+  };
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateProductInventory(selectedProduct.id, formValues);
-      setProducts(await fetchProducts());
+      await updatePricesInventory(selectedProduct.id, formValues);
       handleCloseModal();
     } catch (error) {
       console.error("Error editing product:", error);
@@ -81,51 +149,26 @@ const Inventory = () => {
   const handleDeleteSubmit = async () => {
     try {
       await deleteProduct(selectedProduct.id);
-      setProducts(await fetchProducts());
       handleCloseModal();
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
 
-  const updateProductInventory = async (productId, product) => {
+  const handleSaleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const { name, price_purchase, price_sell, stock_initial, stock_current } =
-        product;
+      await updateUtilityInventory(selectedProduct, saleAmount);
 
-      const pricePurchase = parseFloat(price_purchase);
-      const priceSell = parseFloat(price_sell);
-      const stockInitial = parseInt(stock_initial);
-      const stockCurrent = parseInt(stock_current);
-      const response = await invoke("update_inventory", {
-        productId,
-        name,
-        pricePurchase,
-        priceSell,
-        stockInitial,
-        stockCurrent,
-      });
-      return response;
+      handleCloseModal();
     } catch (error) {
-      console.error("Error updating product:", error);
-      throw error;
-    }
-  };
-
-  const deleteProduct = async (productId) => {
-    try {
-      const response = await invoke("delete_product", { productId });
-      return response;
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      throw error;
+      console.error("Error recording sale:", error);
     }
   };
 
   return (
     <div className="inventory">
       <p className="inventory-title">Existencias</p>
-
       <table className="inventory-table">
         <thead>
           <tr>
@@ -134,6 +177,7 @@ const Inventory = () => {
             <th>Precio venta</th>
             <th>Stock inicial</th>
             <th>Stock actual</th>
+            <th>Utilidad</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -145,6 +189,7 @@ const Inventory = () => {
               <td>{product.price_sell}</td>
               <td>{product.stock_initial}</td>
               <td>{product.stock_current}</td>
+              <td>{product.utility.toFixed(2)}</td>
               <td>
                 <button
                   className="edit-button"
@@ -157,6 +202,13 @@ const Inventory = () => {
                   onClick={() => handleDeleteButtonClick(product)}
                 >
                   Eliminar
+                </button>
+
+                <button
+                  className="register-sale-button"
+                  onClick={() => handleSaleButtonClick(product)}
+                >
+                  Registrar Venta
                 </button>
               </td>
             </tr>
@@ -171,16 +223,6 @@ const Inventory = () => {
         onClose={handleCloseModal}
       >
         <form onSubmit={handleEditSubmit} className="form">
-          <div className="form-group">
-            <label>Nombre:</label>
-            <input
-              type="text"
-              name="name"
-              value={formValues.name}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
           <div className="form-group">
             <label>Precio compra:</label>
             <input
@@ -213,16 +255,7 @@ const Inventory = () => {
               required
             />
           </div>
-          <div className="form-group">
-            <label>Stock actual:</label>
-            <input
-              type="number"
-              name="stock_current"
-              value={formValues.stock_current}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+
           <div className="form-actions">
             <button type="submit" className="edit-button">
               Guardar Cambios
@@ -248,6 +281,31 @@ const Inventory = () => {
             </button>
           </div>
         </div>
+      </Modal>
+
+      {/* Modal para registrar venta */}
+      <Modal
+        title="Registrar Venta"
+        isOpen={isSaleModalOpen}
+        onClose={handleCloseModal}
+      >
+        <form onSubmit={handleSaleSubmit} className="form">
+          <div className="form-group">
+            <label>Cantidad vendida:</label>
+            <input
+              type="number"
+              name="saleAmount"
+              value={saleAmount}
+              onChange={handleSaleInputChange}
+              required
+            />
+          </div>
+          <div className="form-actions">
+            <button type="submit" className="sale-button">
+              Registrar
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

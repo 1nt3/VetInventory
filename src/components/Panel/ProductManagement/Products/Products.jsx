@@ -4,93 +4,123 @@ import { invoke } from "@tauri-apps/api/tauri";
 import "./Products.css";
 import Modal from "../../../shared/Modal/Modal";
 
-const fetchSuppliers = async () => {
-  try {
-    const response = await invoke("get_suppliers");
-    return response;
-  } catch (error) {
-    console.error("Error fetching suppliers:", error);
-    return [];
-  }
-};
-
-const fetchProducts = async () => {
-  try {
-    const response = await invoke("get_products");
-    return response;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-};
-
-const createProduct = async (product) => {
-  try {
-    const { name, description, category_id, supplier_id } = product;
-    const categoryId = parseInt(category_id);
-    const supplierId = parseInt(supplier_id);
-
-    console.log(product);
-
-    const response = await invoke("create_product", {
-      name,
-      description,
-      categoryId,
-      supplierId,
-    });
-    return response;
-  } catch (error) {
-    console.error("Error creating product:", error);
-    throw error;
-  }
-};
-
-const updateProduct = async (productId, product) => {
-  try {
-    const { name, description, category_id, supplier_id } = product;
-    const categoryId = parseInt(category_id);
-    const supplierId = parseInt(supplier_id);
-
-    const response = await invoke("update_product", {
-      productId,
-      name,
-      description,
-      categoryId,
-      supplierId,
-    });
-    return response;
-  } catch (error) {
-    console.error("Error updating product:", error);
-    throw error;
-  }
-};
-
-const deleteProduct = async (productId) => {
-  try {
-    const response = await invoke("delete_product", { productId });
-    return response;
-  } catch (error) {
-    console.error("Error deleting product:", error);
-    throw error;
-  }
-};
-
-const fetchCategories = async () => {
-  try {
-    const response = await invoke("get_categories");
-    return response;
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
-};
-
 const Products = () => {
+  const fetchSuppliers = async () => {
+    try {
+      const response = await invoke("get_suppliers");
+      return response;
+    } catch (error) {
+      console.error("Error fetching suppliers:", error);
+      return [];
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const response = await invoke("get_products");
+      return response;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
+    }
+  };
+
+  const createProduct = async (product) => {
+    try {
+      const { name, description, category_id, supplier_id } = product;
+      const categoryId = parseInt(category_id);
+      const supplierId = parseInt(supplier_id);
+
+      console.log(product);
+
+      const response = await invoke("create_product", {
+        name,
+        description,
+        categoryId,
+        supplierId,
+      });
+      return response;
+    } catch (error) {
+      console.error("Error creating product:", error);
+      throw error;
+    }
+  };
+
+  const updateProduct = async (productId, product) => {
+    try {
+      const { name, description, category_id, supplier_id } = product;
+      const categoryId = parseInt(category_id);
+      const supplierId = parseInt(supplier_id);
+
+      const response = await invoke("update_product", {
+        productId,
+        name,
+        description,
+        categoryId,
+        supplierId,
+      });
+      return response;
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  };
+
+  const deleteProduct = async (productId) => {
+    try {
+      const response = await invoke("delete_product", { productId });
+      return response;
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      throw error;
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await invoke("get_categories");
+      return response;
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      return [];
+    }
+  };
+
+  const addStock = async (oldProduct, newProduct) => {
+    try {
+      const STOCK_INITIAL = 0;
+      let stock_current_new = parseInt(newProduct.stock_current);
+
+      if (oldProduct.stock_initial === STOCK_INITIAL) {
+        oldProduct.stock_initial = stock_current_new;
+      }
+
+      oldProduct.stock_current += stock_current_new;
+
+      const productId = oldProduct.id;
+      const stockInitial = oldProduct.stock_initial;
+      const stockCurrent = oldProduct.stock_current;
+      //console.log(stockInitial);
+      //console.log(stockCurrent);
+      const response = await await invoke("add_stock", {
+        productId,
+        stockInitial,
+        stockCurrent,
+      });
+      return response;
+    } catch (error) {
+      console.error("Error add stock:", error);
+      return [];
+    }
+  };
+
   const initialProductFormValues = {
     name: "",
     description: "",
     category_id: 0,
     supplier_id: 0,
+    stock_initial: 0,
+    stock_current: 0,
   };
 
   const {
@@ -99,6 +129,7 @@ const Products = () => {
     isEditModalOpen,
     isDeleteModalOpen,
     formValues,
+    selectedProduct,
     handleAddButtonClick,
     handleEditButtonClick,
     handleDeleteButtonClick,
@@ -107,6 +138,7 @@ const Products = () => {
     handleAddSubmit,
     handleEditSubmit,
     handleDeleteSubmit,
+    setItems: setProducts,
   } = useActions(
     fetchProducts,
     createProduct,
@@ -117,6 +149,12 @@ const Products = () => {
 
   const [categories, setCategories] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
+  const [isStockModalOpen, setIsStockModalOpen] = useState(false);
+
+  const [formProductStockValues, setFormProductStockValues] = useState(
+    initialProductFormValues
+  );
+  const [selectedProductStock, setSelectedProductStock] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -125,6 +163,31 @@ const Products = () => {
     };
     loadData();
   }, []);
+
+  const handleCloseStockModal = () => {
+    setIsStockModalOpen(false);
+  };
+
+  const handleStockButtonClick = (item) => {
+    setFormProductStockValues(item);
+    setSelectedProductStock(item);
+    setIsStockModalOpen(true);
+  };
+
+  const handleStockSubmit = async (event) => {
+    event.preventDefault();
+    await addStock(selectedProductStock, formProductStockValues);
+    setIsStockModalOpen(false);
+    setProducts(await fetchProducts());
+  };
+
+  const handleInputChangeStock = (event) => {
+    const { name, value } = event.target;
+    setFormProductStockValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
 
   const getCategoryName = (id) => {
     const category = categories.find((category) => category.id === id);
@@ -141,7 +204,7 @@ const Products = () => {
       <h2 className="table-title">Productos</h2>
       <div className="actions">
         <button className="add-button" onClick={handleAddButtonClick}>
-          Agregar
+          Crear
         </button>
       </div>
       <div className="table-wrapper">
@@ -152,6 +215,7 @@ const Products = () => {
               <th>Categoría</th>
               <th>Proveedor</th>
               <th>Descripción</th>
+              <th>Stock</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -162,7 +226,14 @@ const Products = () => {
                 <td>{getCategoryName(product.category_id)}</td>
                 <td>{getSupplierName(product.supplier_id)}</td>
                 <td>{product.description}</td>
+                <td>{product.stock_current}</td>
                 <td>
+                  <button
+                    className="stock-button"
+                    onClick={() => handleStockButtonClick(product)}
+                  >
+                    Añadir Stock
+                  </button>
                   <button
                     className="edit-button"
                     onClick={() => handleEditButtonClick(product)}
@@ -183,7 +254,7 @@ const Products = () => {
       </div>
       {/* Modal para agregar producto */}
       <Modal
-        title="Agregar Producto"
+        title="Crear Producto"
         isOpen={isAddModalOpen}
         onClose={handleCloseModal}
       >
@@ -306,6 +377,30 @@ const Products = () => {
           <div className="form-actions">
             <button type="submit" className="add-button">
               Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal
+        title="Agregar Stock"
+        isOpen={isStockModalOpen}
+        onClose={handleCloseStockModal}
+      >
+        <form onSubmit={handleStockSubmit} className="form">
+          <div className="form-group">
+            <label>Cantidad:</label>
+            <input
+              type="number"
+              name="stock_current"
+              onChange={handleInputChangeStock}
+              min="0"
+              required
+            />
+          </div>
+          <div className="form-actions">
+            <button type="submit" className="add-button">
+              Agregar
             </button>
           </div>
         </form>

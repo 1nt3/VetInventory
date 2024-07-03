@@ -100,28 +100,32 @@ const Suppliers = () => {
             </tr>
           </thead>
           <tbody>
-            {suppliers.map((supplier, index) => (
-              <tr key={index}>
-                <td>{supplier.name}</td>
-                <td>{supplier.email}</td>
-                <td>{supplier.phone}</td>
-                <td>{supplier.address}</td>
-                <td>
-                  <button
-                    className="edit-button"
-                    onClick={() => handleEditButtonClick(supplier)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteButtonClick(supplier)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {suppliers
+              .filter(
+                (supplier) => supplier.name.toUpperCase() !== "SIN PROVEEDOR"
+              )
+              .map((supplier, index) => (
+                <tr key={index}>
+                  <td>{supplier.name}</td>
+                  <td>{supplier.email}</td>
+                  <td>{supplier.phone}</td>
+                  <td>{supplier.address}</td>
+                  <td>
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEditButtonClick(supplier)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteButtonClick(supplier)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

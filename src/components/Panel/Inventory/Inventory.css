@@ -4,3 +4,15 @@
   font-weight: bolder;
   padding: 25px;
 }
+
+.sale-button {
+  background-color: #4caf50;
+  /* Color verde */
+  padding: 11px 20px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #fff;
+}
