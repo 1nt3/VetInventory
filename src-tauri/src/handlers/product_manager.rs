@@ -43,10 +43,11 @@ pub async fn create_product(
         description,
         category_id,
         supplier_id,
-        price_purchase: 1.0,
-        price_sell: 1.0,
+        price_purchase: 0.0,
+        price_sell: 0.0,
         stock_initial: 0,
         stock_current: 0,
+        utility: 0.0,
     };
 
     let mut product_rep = ProductRepository::new(pool_conn);
@@ -84,6 +85,7 @@ pub async fn delete_product(state: State<'_, Database>, product_id: i64) -> Resu
         .map_err(|_| "Failed to get database connection".to_string())?;
 
     let mut product_rep = ProductRepository::new(pool_conn);
+
     product_rep
         .delete(product_id)
         .await
@@ -96,11 +98,8 @@ pub async fn delete_product(state: State<'_, Database>, product_id: i64) -> Resu
 pub async fn update_inventory(
     state: State<'_, Database>,
     product_id: i64,
-    name: &str,
     price_purchase: f64,
     price_sell: f64,
-    stock_initial: i64,
-    stock_current: i64,
 ) -> Result<(), String> {
     let pool_conn = state
         .clone()
@@ -118,11 +117,44 @@ pub async fn update_inventory(
     let product_old = product_old.expect("Error al obtener el producto actual.");
     let product_updated = Product {
         id: product_id,
-        name: name.to_string(),
         price_purchase,
         price_sell,
-        stock_initial,
+        ..product_old
+    };
+
+    product_rep
+        .update(product_updated)
+        .await
+        .map_err(|e| format!("Error en la actualización del producto: {}", e))?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn update_utility_product(
+    state: State<'_, Database>,
+    product_id: i64,
+    stock_current: i64,
+    utility: f64,
+) -> Result<(), String> {
+    let pool_conn = state
+        .clone()
+        .get_connection()
+        .await
+        .map_err(|_| "Failed to get database connection".to_string())?;
+
+    let mut product_rep = ProductRepository::new(pool_conn);
+
+    let product_old = match product_rep.find_by_id(product_id).await {
+        Ok(product) => product,
+        Err(_e) => None,
+    };
+
+    let product_old = product_old.expect("Error al obtener el producto actual.");
+    let product_updated = Product {
+        id: product_id,
         stock_current,
+        utility,
         ..product_old
     };
 
@@ -217,11 +249,23 @@ pub async fn get_categories(state: State<'_, Database>) -> Result<Vec<Category>,
 
 #[tauri::command]
 pub async fn delete_category(state: State<'_, Database>, category_id: i64) -> Result<(), String> {
-    let pool_conn = state
+    let mut pool_conn = state
         .clone()
         .get_connection()
         .await
         .map_err(|_| "Failed to get database connection".to_string())?;
+
+    let query = sqlx::query!(
+        "UPDATE product SET category_id = 1 WHERE category_id = ?",
+        category_id
+    );
+
+    query.execute(&mut *pool_conn).await.map_err(|e| {
+        format!(
+            "Error al actualizar la categoría asociada a los productos: {}",
+            e
+        )
+    })?;
 
     let mut category_rep = CategoryRepository::new(pool_conn);
     category_rep
@@ -333,11 +377,23 @@ pub async fn get_suppliers(state: State<'_, Database>) -> Result<Vec<Supplier>, 
 
 #[tauri::command]
 pub async fn delete_supplier(state: State<'_, Database>, supplier_id: i64) -> Result<(), String> {
-    let pool_conn = state
+    let mut pool_conn = state
         .clone()
         .get_connection()
         .await
         .map_err(|_| "Failed to get database connection".to_string())?;
+
+    let query = sqlx::query!(
+        "UPDATE product SET supplier_id = 1 WHERE supplier_id = ?",
+        supplier_id
+    );
+
+    query.execute(&mut *pool_conn).await.map_err(|e| {
+        format!(
+            "Error al actualizar el proveedor asociado a los productos: {}",
+            e
+        )
+    })?;
 
     let mut supplier_rep = SupplierRepository::new(pool_conn);
     supplier_rep
@@ -385,6 +441,7 @@ pub async fn create_user(
     state: State<'_, Database>,
     email: &str,
     password: &str,
+    role_id: i64,
 ) -> Result<(), String> {
     let pool_conn = state
         .clone()
@@ -438,7 +495,6 @@ pub async fn delete_user(state: State<'_, Database>, user_id: i64) -> Result<(),
         .await
         .map_err(|e| format!("Error en la eliminación del usuario: {}", e))?;
 
-    //println!("Productos {:?}", products);
     Ok(())
 }
 
@@ -466,6 +522,42 @@ pub async fn update_user(
         .update(user_update)
         .await
         .map_err(|e| format!("Error en la actualización del usuario: {}", e))?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn add_stock(
+    state: State<'_, Database>,
+    product_id: i64,
+    stock_initial: i64,
+    stock_current: i64,
+) -> Result<(), String> {
+    let pool_conn = state
+        .clone()
+        .get_connection()
+        .await
+        .map_err(|_| "Failed to get database connection".to_string())?;
+
+    let mut product_rep = ProductRepository::new(pool_conn);
+
+    let product_old = match product_rep.find_by_id(product_id).await {
+        Ok(product) => product,
+        Err(_e) => None,
+    };
+
+    let product_old = product_old.expect("Error al obtener el producto actual.");
+    let product_updated = Product {
+        id: product_id,
+        stock_initial,
+        stock_current,
+        ..product_old
+    };
+
+    product_rep
+        .update(product_updated)
+        .await
+        .map_err(|e| format!("Error en agregar del stock: {}", e))?;
 
     Ok(())
 }
