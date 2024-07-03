@@ -12,4 +12,5 @@ pub struct Product {
     pub price_sell: f64,
     pub stock_initial: i64,
     pub stock_current: i64,
+    pub utility: f64,
 }

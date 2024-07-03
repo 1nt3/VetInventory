@@ -8,5 +8,6 @@ pub struct NewUser<'a> {
 }*/
 pub mod category;
 pub mod product;
+pub mod role;
 pub mod supplier;
 pub mod user;
