@@ -84,6 +84,7 @@ const useActions = (
     handleAddSubmit,
     handleEditSubmit,
     handleDeleteSubmit,
+    setItems,
   };
 };
 
