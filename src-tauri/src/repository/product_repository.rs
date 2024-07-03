@@ -33,7 +33,7 @@ impl Repository<Product> for ProductRepository {
 
     async fn create(&mut self, product: Product) -> Result<(), SqlxError> {
         sqlx::query!(
-            "INSERT INTO product (name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO product (name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current, utility) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             product.name,
             product.description,
             product.category_id,
@@ -41,7 +41,8 @@ impl Repository<Product> for ProductRepository {
             product.price_purchase,
             product.price_sell,
             product.stock_initial,
-            product.stock_current
+            product.stock_current,
+            product.utility
         )
         .execute(&mut *self.pool)
         .await?;
@@ -51,7 +52,7 @@ impl Repository<Product> for ProductRepository {
 
     async fn update(&mut self, product: Product) -> Result<(), SqlxError> {
         sqlx::query!(
-            "UPDATE product SET name = ?, description = ?, category_id = ?, supplier_id = ?, price_purchase = ?, price_sell = ?, stock_initial = ?, stock_current = ? WHERE id = ?",
+            "UPDATE product SET name = ?, description = ?, category_id = ?, supplier_id = ?, price_purchase = ?, price_sell = ?, stock_initial = ?, stock_current = ?, utility = ? WHERE id = ?",
             product.name,
             product.description,
             product.category_id,
@@ -60,6 +61,7 @@ impl Repository<Product> for ProductRepository {
             product.price_sell,
             product.stock_initial,
             product.stock_current,
+            product.utility,
             product.id
         )
         .execute(&mut *self.pool)
