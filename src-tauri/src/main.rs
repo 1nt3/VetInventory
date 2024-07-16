@@ -7,12 +7,14 @@ mod models;
 mod repository;
 
 use database::Database;
-use handlers::login::{get_rol_user, get_roles, is_credential_valid};
+use handlers::login::{
+    assign_role_to_user, create_user, delete_user, get_rol_user, get_roles, get_users,
+    is_credential_valid, update_user,
+};
 use handlers::product_manager::{
-    add_stock, create_category, create_product, create_supplier, create_user, delete_category,
-    delete_product, delete_supplier, delete_user, get_amount_products_by_category, get_categories,
-    get_products, get_suppliers, get_users, update_category, update_inventory, update_product,
-    update_supplier, update_user, update_utility_product,
+    add_stock, create_category, create_product, create_supplier, delete_category, delete_product,
+    delete_supplier, get_amount_products_by_category, get_categories, get_products, get_suppliers,
+    update_category, update_inventory, update_product, update_supplier, update_utility_product,
 };
 
 use tauri::async_runtime::block_on;
@@ -44,7 +46,8 @@ fn main() {
             add_stock,
             update_utility_product,
             get_rol_user,
-            get_roles
+            get_roles,
+            assign_role_to_user
         ])
         .run(tauri::generate_context!())
         .expect("Failed to run Tauri application");
