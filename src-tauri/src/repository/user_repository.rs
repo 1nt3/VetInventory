@@ -31,16 +31,17 @@ impl Repository<User> for UserRepository {
         Ok(user)
     }
 
-    async fn create(&mut self, user: User) -> Result<(), SqlxError> {
-        sqlx::query!(
-            "INSERT INTO user (email, password) VALUES (?, ?)",
+    async fn create(&mut self, user: User) -> Result<User, SqlxError> {
+        let result = sqlx::query_as!(
+            User,
+            "INSERT INTO user (email, password) VALUES (?, ?) RETURNING id, email, password",
             user.email,
             user.password
         )
-        .execute(&mut *self.pool)
+        .fetch_one(&mut *self.pool)
         .await?;
 
-        Ok(())
+        Ok(result)
     }
 
     async fn update(&mut self, user: User) -> Result<(), SqlxError> {

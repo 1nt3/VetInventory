@@ -31,9 +31,10 @@ impl Repository<Product> for ProductRepository {
         Ok(product)
     }
 
-    async fn create(&mut self, product: Product) -> Result<(), SqlxError> {
-        sqlx::query!(
-            "INSERT INTO product (name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current, utility) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    async fn create(&mut self, product: Product) -> Result<Product, SqlxError> {
+        let result = sqlx::query_as!(
+            Product,
+            "INSERT INTO product (name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current, utility) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, name, description, category_id, supplier_id, price_purchase, price_sell, stock_initial, stock_current, utility",
             product.name,
             product.description,
             product.category_id,
@@ -44,10 +45,10 @@ impl Repository<Product> for ProductRepository {
             product.stock_current,
             product.utility
         )
-        .execute(&mut *self.pool)
+        .fetch_one(&mut *self.pool)
         .await?;
 
-        Ok(())
+        Ok(result)
     }
 
     async fn update(&mut self, product: Product) -> Result<(), SqlxError> {

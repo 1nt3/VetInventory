@@ -32,18 +32,19 @@ impl Repository<Supplier> for SupplierRepository {
         Ok(supplier)
     }
 
-    async fn create(&mut self, supplier: Supplier) -> Result<(), SqlxError> {
-        sqlx::query!(
-            "INSERT INTO supplier (name, address, phone, email) VALUES (?, ?, ?, ?)",
+    async fn create(&mut self, supplier: Supplier) -> Result<Supplier, SqlxError> {
+        let result = sqlx::query_as!(
+            Supplier,
+            "INSERT INTO supplier (name, address, phone, email) VALUES (?, ?, ?, ?) RETURNING id, name, address, phone , email",
             supplier.name,
             supplier.address,
             supplier.phone,
             supplier.email,
         )
-        .execute(&mut *self.pool)
+        .fetch_one(&mut *self.pool)
         .await?;
 
-        Ok(())
+        Ok(result)
     }
 
     async fn update(&mut self, supplier: Supplier) -> Result<(), SqlxError> {

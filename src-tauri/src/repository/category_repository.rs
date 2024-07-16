@@ -32,12 +32,16 @@ impl Repository<Category> for CategoryRepository {
         Ok(category)
     }
 
-    async fn create(&mut self, category: Category) -> Result<(), SqlxError> {
-        sqlx::query!("INSERT INTO category (name) VALUES (?)", category.name,)
-            .execute(&mut *self.pool)
-            .await?;
+    async fn create(&mut self, category: Category) -> Result<Category, SqlxError> {
+        let result = sqlx::query_as!(
+            Category,
+            "INSERT INTO category (name) VALUES (?) RETURNING id, name",
+            category.name,
+        )
+        .fetch_one(&mut *self.pool)
+        .await?;
 
-        Ok(())
+        Ok(result)
     }
 
     async fn update(&mut self, category: Category) -> Result<(), SqlxError> {
