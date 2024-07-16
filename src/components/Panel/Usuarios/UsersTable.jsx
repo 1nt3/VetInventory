@@ -18,33 +18,24 @@ const UsersTable = ({
   };
 
   const getPasswordText = (user, index) => {
-    return visiblePasswords[index] ? user.password : "••••••••";
+    return visiblePasswords[index] ? user.password : "************";
   };
 
-  const getRolUser = async (email) => {
-    try {
-      const response = await invoke("get_rol_user", { email });
-      return response;
-    } catch (error) {
-      console.error("Error getting user role:", error);
-      throw error;
+  const fetchUserRoles = async () => {
+    const roles = {};
+    for (const user of users) {
+      try {
+        const role = await invoke("get_rol_user", { email: user.email });
+        roles[user.email] = role.name;
+      } catch (error) {
+        console.error("Error getting user role:", error);
+        roles[user.email] = "Error"; // Handle error case
+      }
     }
+    setUserRoles(roles);
   };
 
   useEffect(() => {
-    const fetchUserRoles = async () => {
-      const roles = {};
-      for (const user of users) {
-        try {
-          const role = await getRolUser(user.email);
-          roles[user.id] = role.name; // Extract the 'name' property from the role object
-        } catch (error) {
-          roles[user.id] = "Error";
-        }
-      }
-      setUserRoles(roles);
-    };
-
     fetchUserRoles();
   }, [users]);
 
@@ -67,11 +58,11 @@ const UsersTable = ({
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {users.slice(1).map((user, index) => (
               <tr key={user.id}>
                 <td>{user.email}</td>
                 <td>{getPasswordText(user, index)}</td>
-                <td>{userRoles[user.id] || "Cargando..."}</td>
+                <td>{userRoles[user.email] || "Cargando..."}</td>
                 <td>
                   <button
                     className="toggle-button"

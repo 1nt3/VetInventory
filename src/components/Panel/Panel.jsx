@@ -5,7 +5,7 @@ import Usuarios from "./Usuarios/Usuarios";
 import ProductManagement from "./ProductManagement/ProductManagement";
 import Inventory from "./Inventory/Inventory";
 
-const Panel = ({ setAuthenticated, emailUserCurrent }) => {
+const Panel = ({ setAuthenticated, emailUserCurrent, userRoleCurrent }) => {
   const [currentViewId, setCurrentViewId] = useState("product-management");
   const navigate = useNavigate();
 
@@ -60,15 +60,17 @@ const Panel = ({ setAuthenticated, emailUserCurrent }) => {
                   Existencias
                 </a>
               </li>
-              <li>
-                <a
-                  href="#users"
-                  className={currentViewId === "usuarios" ? "active" : ""}
-                  onClick={() => setCurrentViewId("usuarios")}
-                >
-                  Usuarios
-                </a>
-              </li>
+              {userRoleCurrent.toUpperCase() === "ADMINISTRADOR" && (
+                <li>
+                  <a
+                    href="#users"
+                    className={currentViewId === "usuarios" ? "active" : ""}
+                    onClick={() => setCurrentViewId("usuarios")}
+                  >
+                    Usuarios
+                  </a>
+                </li>
+              )}
             </ul>
           </nav>
           <button className="logout-button" onClick={handleLogout}>

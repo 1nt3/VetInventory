@@ -16,7 +16,21 @@ const authenticateUser = async (email, password) => {
   }
 };
 
-const LoginSignup = ({ setAuthenticated, setEmailUserCurrent }) => {
+const getUserRole = async (email) => {
+  try {
+    const role = await invoke("get_rol_user", { email });
+    return role;
+  } catch (error) {
+    console.error("Error getting user role:", error);
+    return "Error"; // Manejo de errores
+  }
+};
+
+const LoginSignup = ({
+  setAuthenticated,
+  setEmailUserCurrent,
+  setUserRoleCurrent,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,6 +44,8 @@ const LoginSignup = ({ setAuthenticated, setEmailUserCurrent }) => {
     try {
       await authenticateUser(email, password);
       setAuthenticated(true);
+      const roleUser = await getUserRole(email);
+      setUserRoleCurrent(roleUser.name);
       setEmailUserCurrent(email);
       navigate("/loading");
     } catch (err) {

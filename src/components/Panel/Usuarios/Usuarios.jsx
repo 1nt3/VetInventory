@@ -14,14 +14,14 @@ const fetchUsers = async () => {
   }
 };
 
-const createUser = async (user) => {
+const createUser = async (formValues) => {
   try {
-    const { email, password, role_id } = user;
+    const { email, password } = formValues;
     const response = await invoke("create_user", {
       email,
       password,
-      role_id,
     });
+
     return response;
   } catch (error) {
     console.error("Error creating user:", error);
@@ -29,9 +29,25 @@ const createUser = async (user) => {
   }
 };
 
-const updateUser = async (userId, user) => {
+const assignRoleUser = async (user_id, role_id) => {
+  let userId = parseInt(user_id);
+  let roleId = parseInt(role_id);
   try {
-    const { email, password } = user;
+    const response = await invoke("assign_role_to_user", {
+      userId,
+      roleId,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+};
+
+const updateUser = async (userId, formValues) => {
+  try {
+    const { email, password } = formValues;
     const response = await invoke("update_user", {
       userId,
       email,
@@ -118,7 +134,8 @@ const Usuarios = () => {
 
   const handleAddSubmit = async (event) => {
     event.preventDefault();
-    await createUser(formValues);
+    let userCreated = await createUser(formValues);
+    await assignRoleUser(userCreated.id, formValues.role_id);
     setIsAddModalOpen(false);
     setUsers(await fetchUsers());
   };
@@ -144,8 +161,6 @@ const Usuarios = () => {
         handleEditButtonClick={handleEditButtonClick}
         handleDeleteButtonClick={handleDeleteButtonClick}
       />
-
-      {/* Modal para agregar usuario */}
       <Modal
         title="Agregar Usuario"
         isOpen={isAddModalOpen}
@@ -244,8 +259,6 @@ const Usuarios = () => {
           </div>
         </form>
       </Modal>
-
-      {/* Modal para confirmar eliminación */}
       <Modal
         title="Confirmar Eliminación"
         isOpen={isDeleteModalOpen}

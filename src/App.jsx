@@ -13,7 +13,7 @@ import LogoutLoading from "./components/Login/LogoutLoading/LogoutLoading"; // I
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [emailUserCurrent, setEmailUserCurrent] = useState("");
-
+  const [userRoleCurrent, setUserRoleCurrent] = useState("");
   return (
     <Router>
       <Routes>
@@ -23,12 +23,12 @@ function App() {
             <LoginSignup
               setAuthenticated={setIsAuthenticated}
               setEmailUserCurrent={setEmailUserCurrent}
+              setUserRoleCurrent={setUserRoleCurrent}
             />
           }
         />
         <Route path="/loading" element={<Loading />} />
         <Route path="/logout-loading" element={<LogoutLoading />} />{" "}
-        {/* Nueva ruta */}
         <Route
           path="/panel"
           element={
@@ -36,6 +36,7 @@ function App() {
               <Panel
                 setAuthenticated={setIsAuthenticated}
                 emailUserCurrent={emailUserCurrent}
+                userRoleCurrent={userRoleCurrent}
               />
             ) : (
               <Navigate to="/" />
