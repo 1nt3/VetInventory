@@ -1,9 +1,8 @@
 use crate::{
     database::Database,
-    models::user::User,
     repository::{
         category_repository::CategoryRepository, product_repository::ProductRepository,
-        supplier_repository::SupplierRepository, user_repository::UserRepository, Repository,
+        supplier_repository::SupplierRepository, Repository,
     },
 };
 use sqlx::FromRow;
@@ -432,96 +431,6 @@ pub async fn update_supplier(
         .update(supplier_update)
         .await
         .map_err(|e| format!("Error en la actualización del proveedor: {}", e))?;
-
-    Ok(())
-}
-
-#[tauri::command]
-pub async fn create_user(
-    state: State<'_, Database>,
-    email: &str,
-    password: &str,
-    role_id: i64,
-) -> Result<(), String> {
-    let pool_conn = state
-        .clone()
-        .get_connection()
-        .await
-        .map_err(|_| "Failed to get database connection".to_string())?;
-
-    let new_user = User {
-        id: 0,
-        email: email.to_string(),
-        password: password.to_string(),
-    };
-
-    let mut user_rep = UserRepository::new(pool_conn);
-
-    if let Err(e) = user_rep.create(new_user).await {
-        return Err(format!("Error al crear usuario: {}", e,));
-    }
-
-    Ok(())
-}
-
-#[tauri::command]
-pub async fn get_users(state: State<'_, Database>) -> Result<Vec<User>, String> {
-    let pool_conn = state
-        .clone()
-        .get_connection()
-        .await
-        .map_err(|_| "Failed to get database connection".to_string())?;
-
-    let mut user_rep = UserRepository::new(pool_conn);
-    let users = user_rep
-        .find_all()
-        .await
-        .map_err(|e| format!("Error en la obtención de usuarios: {}", e))?;
-
-    Ok(users)
-}
-
-#[tauri::command]
-pub async fn delete_user(state: State<'_, Database>, user_id: i64) -> Result<(), String> {
-    let pool_conn = state
-        .clone()
-        .get_connection()
-        .await
-        .map_err(|_| "Failed to get database connection".to_string())?;
-
-    let mut user_rep = UserRepository::new(pool_conn);
-    user_rep
-        .delete(user_id)
-        .await
-        .map_err(|e| format!("Error en la eliminación del usuario: {}", e))?;
-
-    Ok(())
-}
-
-#[tauri::command]
-pub async fn update_user(
-    state: State<'_, Database>,
-    user_id: i64,
-    email: &str,
-    password: &str,
-) -> Result<(), String> {
-    let pool_conn = state
-        .clone()
-        .get_connection()
-        .await
-        .map_err(|_| "Failed to get database connection".to_string())?;
-
-    let mut user_rep = UserRepository::new(pool_conn);
-    let user_update = User {
-        id: user_id,
-        email: email.to_string(),
-        password: password.to_string(),
-    };
-
-    user_rep
-        .update(user_update)
-        .await
-        .map_err(|e| format!("Error en la actualización del usuario: {}", e))?;
 
     Ok(())
 }
